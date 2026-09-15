@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudyGram — Resource</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="resource-page">
+
+    <!-- TOP BAR -->
+    <header class="resource-topbar">
+
+        <a href="/dashboard" class="back-button">
+            ← Back
+        </a>
+
+        <div class="sg-logo">
+            <div class="brand-mark">S</div>
+            <span>StudyGram</span>
+        </div>
+
+    </header>
+
+
+    <main class="resource-container">
+
+        <!-- ========================= -->
+        <!-- PREVIEW -->
+        <!-- ========================= -->
+
+        <section class="resource-document">
+
+            <div class="document-label">
+                <span th:text="${resource.category}">NOTES</span>
+                &nbsp;•&nbsp; PDF PREVIEW
+            </div>
+
+            <div class="document-paper">
+
+                <p class="document-small">
+                    STUDYGRAM •
+                    <span th:text="${resource.category}">NOTES</span>
+                </p>
+
+                <h1>
+                    <span th:text="${resource.title}">
+                        Data Structures Complete Notes
+                    </span>
+                </h1>
+
+                <div class="document-line"></div>
+
+                <p>
+                    <span th:text="${resource.description}">
+                        Complete notes covering important concepts.
+                    </span>
+                </p>
+
+                <div class="document-lines">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- DETAILS -->
+        <!-- ========================= -->
+
+        <section class="resource-details">
+
+            <!-- CATEGORY -->
+
+            <p class="eyebrow">
+                <span th:text="${resource.category}">
+                    NOTES
+                </span>
+            </p>
+
+
+            <!-- TITLE -->
+
+            <h1>
+
+                <span th:text="${resource.title}">
+                    Data Structures Complete Notes
+                </span>
+
+            </h1>
+
+
+            <!-- SUBJECT -->
+
+            <p class="resource-description">
+
+                <strong>Subject:</strong>
+
+                <span th:text="${resource.subject}">
+                    Data Structures
+                </span>
+
+            </p>
+
+
+            <!-- DESCRIPTION -->
+
+            <p class="resource-description">
+
+                <span th:text="${resource.description}">
+                    Complete notes covering important concepts of Data
+                    Structures and Algorithms.
+                </span>
+
+            </p>
+
+
+            <!-- TAGS -->
+
+            <div class="resource-tags">
+
+                <span
+                    th:each="tag : ${#strings.arraySplit(resource.tags, ',')}"
+                    th:text="${tag.trim()}">
+                    DSA
+                </span>
+
+            </div>
+
+
+            <!-- AUTHOR -->
+
+            <div class="resource-author">
+
+                <div class="author-avatar">
+
+                    <span
+                        th:text="${#strings.substring(resource.uploader, 0, 1)}">
+                        S
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <small>
+                        UPLOADED BY
+                    </small>
+
+                    <strong
+                        th:text="${resource.uploader}">
+                        StudyGram
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="resource-actions">
+
+                <button class="download-button">
+
+                    ↓ &nbsp; Download PDF
+
+                </button>
+
+                <button class="bookmark-button">
+
+                    ♡
+
+                </button>
+
+            </div>
+
+
+            <!-- STATS -->
+
+            <div class="resource-stats">
+
+                <div>
+
+                    <strong
+                        th:text="${resource.likes}">
+                        0
+                    </strong>
+
+                    <span>
+                        Likes
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        PDF
+                    </strong>
+
+                    <span>
+                        Format
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong
+                        th:text="${resource.fileName}">
+                        file.pdf
+                    </strong>
+
+                    <span>
+                        File
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

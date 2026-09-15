@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudyGram — Create Account</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="auth-page">
+
+    <div class="auth-glow glow-one"></div>
+    <div class="auth-glow glow-two"></div>
+
+    <main class="auth-card">
+
+        <div class="brand">
+            <div class="brand-mark">S</div>
+            <span>StudyGram</span>
+        </div>
+
+        <div class="auth-heading">
+            <p class="eyebrow">GET STARTED</p>
+
+            <h1>Create your<br><span>study space.</span></h1>
+
+            <p class="subtitle">
+                Join StudyGram and keep your academic resources in one place.
+            </p>
+        </div>
+
+        <form class="login-form" method="post" action="/signup">
+
+            <div class="input-group">
+                <label for="name">NAME</label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Your name"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="email">EMAIL</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="password">PASSWORD</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="login-button">
+                <span>Create account</span>
+                <span class="arrow">→</span>
+            </button>
+
+        </form>
+
+        <p class="signup-text">
+            Already have an account?
+            <a href="/">Sign in</a>
+        </p>
+
+        <p class="footer-text">
+            Built for students. Designed to study better.
+        </p>
+
+    </main>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudyGram — Login</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <div class="auth-page">
+
+        <div class="auth-glow glow-one"></div>
+        <div class="auth-glow glow-two"></div>
+
+        <main class="auth-card">
+
+            <div class="brand">
+                <div class="brand-mark">S</div>
+                <span>StudyGram</span>
+            </div>
+
+            <div class="auth-heading">
+                <p class="eyebrow">WELCOME BACK</p>
+                <h1>Continue your<br><span>study flow.</span></h1>
+                <p class="subtitle">
+                    Access your resources, notes and academic workspace.
+                </p>
+            </div>
+
+            <form class="login-form" method="post" action="/login">
+                <div class="input-group">
+                    <label for="email">EMAIL</label>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                </div>
+
+                <div class="input-group">
+                    <div class="label-row">
+                        <label for="password">PASSWORD</label>
+                        <a href="#">Forgot?</a>
+                    </div>
+
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" class="login-button">
+                    <span>Sign in</span>
+                    <span class="arrow">→</span>
+                </button>
+
+            </form>
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+            <button class="secondary-button">
+                Continue as guest
+            </button>
+
+            <p class="signup-text">
+                New to StudyGram?
+                <a href="#">Create an account</a>
+            </p>
+
+            <p class="footer-text">
+                Built for students. Designed to study better.
+            </p>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

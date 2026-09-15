@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudyGram — Home</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <div class="sg-app">
+
+        <!-- SIDEBAR -->
+        <aside class="sg-sidebar">
+
+            <div class="sg-logo">
+                <div class="brand-mark">S</div>
+                <span>StudyGram</span>
+            </div>
+
+            <nav class="sg-nav">
+
+                <a class="nav-item active" href="#">
+                    <span>⌂</span>
+                    Home
+                </a>
+
+                <a class="nav-item" href="#">
+                    <span>⌕</span>
+                    Explore
+                </a>
+
+                <a class="nav-item" href="#">
+                    <span>▱</span>
+                    My Resources
+                </a>
+
+                <a class="nav-item" href="#">
+                    <span>♡</span>
+                    Bookmarks
+                </a>
+
+                <a class="nav-item" href="#">
+                    <span>♙</span>
+                    Profile
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <a class="nav-item" href="#">
+                    <span>⚙</span>
+                    Settings
+                </a>
+
+                <a class="nav-item" href="/logout">
+                    <span>↪</span>
+                    Logout
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN AREA -->
+        <main class="sg-main">
+
+            <!-- TOP BAR -->
+            <header class="sg-topbar">
+
+                <div class="sg-search">
+                    <span>⌕</span>
+                    <input type="text" placeholder="Search notes, PYQs, mindmaps, subjects...">
+                </div>
+
+                <div class="sg-user">
+                    <div class="notification">♧</div>
+
+                    <div class="user-avatar">
+                        <span th:text="${#strings.substring(session.userName, 0, 1)}">
+                            Y
+                        </span>
+                    </div>
+
+                    <span class="user-greeting">
+                        Hello, <strong th:text="${session.userName}">Student</strong>
+                    </span>
+                </div>
+
+            </header>
+
+
+            <!-- CONTENT -->
+            <div class="sg-content">
+
+                <!-- HERO -->
+                <section class="sg-hero">
+
+                    <div class="hero-content">
+
+                        <p class="eyebrow">STUDY SMARTER</p>
+
+                        <h1>
+                            Your Academic<br>
+                            Resource <span>Hub.</span>
+                        </h1>
+
+                        <p>
+                            Notes, PYQs, mindmaps and everything you need
+                            to study better — all in one place.
+                        </p>
+
+                        <div class="hero-search">
+
+                            <span>⌕</span>
+
+                            <input type="text" placeholder="What are you looking for?">
+
+                            <button>Search</button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="hero-decoration">
+                        <div class="deco-circle"></div>
+                        <div class="deco-line"></div>
+                        <div class="deco-text">STUDY<br>BETTER</div>
+                    </div>
+
+                </section>
+
+
+                <!-- CATEGORIES -->
+                <section class="sg-section">
+
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">EXPLORE</p>
+                            <h2>Study Resources</h2>
+                        </div>
+
+                        <a href="#">View all →</a>
+                    </div>
+
+
+                    <div class="category-grid">
+
+                        <div class="category-card">
+                            <div class="category-icon">▤</div>
+                            <span>Notes</span>
+                        </div>
+
+                        <div class="category-card">
+                            <div class="category-icon purple">▣</div>
+                            <span>PYQs</span>
+                        </div>
+
+                        <div class="category-card">
+                            <div class="category-icon green">✣</div>
+                            <span>Mindmaps</span>
+                        </div>
+
+                        <div class="category-card">
+                            <div class="category-icon yellow">★</div>
+                            <span>Important Questions</span>
+                        </div>
+
+                        <div class="category-card">
+                            <div class="category-icon blue">▤</div>
+                            <span>Last Year Papers</span>
+                        </div>
+
+                        <div class="category-card">
+                            <div class="category-icon pink">ϟ</div>
+                            <span>Cheatsheets</span>
+                        </div>
+
+                        <div class="category-card">
+                            <div class="category-icon teal">▧</div>
+                            <span>Short Notes</span>
+                        </div>
+
+                        <div class="category-card">
+                            <div class="category-icon violet">▦</div>
+                            <span>Formula Sheets</span>
+                        </div>
+
+                        <div class="category-card">
+                            <div class="category-icon orange">?</div>
+                            <span>Question Banks</span>
+                        </div>
+
+                        <div class="category-card">
+                            <div class="category-icon cyan">◈</div>
+                            <span>Study Guides</span>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- RESOURCE FEED -->
+                <section class="sg-section">
+
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">DISCOVER</p>
+                            <h2>Trending Resources</h2>
+                        </div>
+
+                        <a href="#">View all →</a>
+                    </div>
+
+
+                    <div class="resource-grid">
+
+                        <!-- CARD 1 -->
+                       <article class="resource-card" onclick="window.location.href='/resource/1'">
+
+                            <div class="resource-preview preview-notes">
+                                <span class="resource-type">NOTES</span>
+                                <div class="fake-paper">
+                                    Data Structures<br>
+                                    & Algorithms
+                                </div>
+                            </div>
+
+                            <div class="resource-info">
+
+                                <h3>Data Structures Complete Notes</h3>
+
+                                <p class="resource-subject">
+                                    Computer Science
+                                </p>
+
+                                <div class="resource-meta">
+                                    <span>♡ 342</span>
+                                    <span>🔖 1.2k</span>
+                                    <span class="file-type">PDF</span>
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- CARD 2 -->
+                        <article class="resource-card" onclick="window.location.href='/resource/2'">
+
+                            <div class="resource-preview preview-pyq">
+                                <span class="resource-type">PYQs</span>
+                                <div class="fake-paper">
+                                    Previous Year<br>
+                                    Question Paper
+                                </div>
+                            </div>
+
+                            <div class="resource-info">
+
+                                <h3>Engineering Mathematics PYQs</h3>
+
+                                <p class="resource-subject">
+                                    Mathematics
+                                </p>
+
+                                <div class="resource-meta">
+                                    <span>♡ 256</span>
+                                    <span>🔖 980</span>
+                                    <span class="file-type">PDF</span>
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- CARD 3 -->
+                        <article class="resource-card" onclick="window.location.href='/resource/3'">
+
+                            <div class="resource-preview preview-mindmap">
+                                <span class="resource-type">MINDMAP</span>
+                                <div class="mindmap">
+                                    <b>CORE<br>CONCEPTS</b>
+                                    <i>↗</i>
+                                    <i>↘</i>
+                                    <i>↙</i>
+                                    <i>↖</i>
+                                </div>
+                            </div>
+
+                            <div class="resource-info">
+
+                                <h3>Complete Revision Mindmap</h3>
+
+                                <p class="resource-subject">
+                                    Science
+                                </p>
+
+                                <div class="resource-meta">
+                                    <span>♡ 198</span>
+                                    <span>🔖 756</span>
+                                    <span class="file-type">PNG</span>
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- CARD 4 -->
+                        <article class="resource-card" onclick="window.location.href='/resource/4'">
+
+                            <div class="resource-preview preview-important">
+                                <span class="resource-type">IMPORTANT</span>
+                                <div class="fake-paper">
+                                    MOST<br>
+                                    IMPORTANT<br>
+                                    QUESTIONS
+                                </div>
+                            </div>
+
+                            <div class="resource-info">
+
+                                <h3>Top Important Questions</h3>
+
+                                <p class="resource-subject">
+                                    Mathematics
+                                </p>
+
+                                <div class="resource-meta">
+                                    <span>♡ 421</span>
+                                    <span>🔖 1.5k</span>
+                                    <span class="file-type">PDF</span>
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- CARD 5 -->
+                        <article class="resource-card" onclick="window.location.href='/resource/5'">
+
+                            <div class="resource-preview preview-paper">
+                                <span class="resource-type">LAST YEAR</span>
+                                <div class="fake-paper">
+                                    UNIVERSITY<br>
+                                    EXAM PAPER
+                                </div>
+                            </div>
+
+                            <div class="resource-info">
+
+                                <h3>Previous University Paper</h3>
+
+                                <p class="resource-subject">
+                                    General Studies
+                                </p>
+
+                                <div class="resource-meta">
+                                    <span>♡ 312</span>
+                                    <span>🔖 1.1k</span>
+                                    <span class="file-type">PDF</span>
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- CARD 6 -->
+                        <article class="resource-card" onclick="window.location.href='/resource/6'">
+
+                            <div class="resource-preview preview-cheat">
+                                <span class="resource-type">CHEATSHEET</span>
+                                <div class="fake-paper">
+                                    QUICK<br>
+                                    REVISION
+                                </div>
+                            </div>
+
+                            <div class="resource-info">
+
+                                <h3>Quick Revision Cheatsheet</h3>
+
+                                <p class="resource-subject">
+                                    Chemistry
+                                </p>
+
+                                <div class="resource-meta">
+                                    <span>♡ 189</span>
+                                    <span>🔖 642</span>
+                                    <span class="file-type">PDF</span>
+                                </div>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+
+        <!-- RIGHT PANEL -->
+        <aside class="sg-right-panel">
+
+            <div class="welcome-box">
+
+                <h3>
+                    Good to see you,
+                    <span th:text="${session.userName}">Student</span>!
+                </h3>
+
+                <p>Keep going. You're doing great.</p>
+
+                <div class="quote">
+                    <strong>“</strong>
+                    <span>Small steps every day lead to big results.</span>
+                </div>
+
+            </div>
+
+
+            <div class="side-box">
+
+                <div class="side-heading">
+                    <h3>Trending Now</h3>
+                </div>
+
+                <div class="trend-item">
+                    <b>01</b>
+                    <div>
+                        <strong>DSA Notes</strong>
+                        <small>Computer Science</small>
+                    </div>
+                </div>
+
+                <div class="trend-item">
+                    <b>02</b>
+                    <div>
+                        <strong>Engineering PYQs</strong>
+                        <small>Mathematics</small>
+                    </div>
+                </div>
+
+                <div class="trend-item">
+                    <b>03</b>
+                    <div>
+                        <strong>Mindmaps</strong>
+                        <small>Science</small>
+                    </div>
+                </div>
+
+                <div class="trend-item">
+                    <b>04</b>
+                    <div>
+                        <strong>Important Questions</strong>
+                        <small>Engineering</small>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="side-box">
+
+                <div class="side-heading">
+                    <h3>Quick Actions</h3>
+                </div>
+
+                <button class="action-button primary">
+                    ↑ &nbsp; Upload Resource
+                </button>
+
+                <button class="action-button">
+                    ♡ &nbsp; My Bookmarks
+                    <span>→</span>
+                </button>
+
+                <button class="action-button">
+                    ▱ &nbsp; My Uploads
+                    <span>→</span>
+                </button>
+
+            </div>
+
+
+            <div class="motivation-box">
+
+                <span>✦</span>
+
+                <p>
+                    Good notes today,<br>
+                    greater opportunities<br>
+                    tomorrow.
+                </p>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</body>
+
+</html>
