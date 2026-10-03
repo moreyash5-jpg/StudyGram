@@ -80,11 +80,17 @@ public class HomeController {
     }
 
     @GetMapping("/dashboard")
-    public String dashboard(HttpSession session) {
+    public String dashboard(
+            HttpSession session,
+            Model model) {
 
         if (session.getAttribute("userName") == null) {
             return "redirect:/";
         }
+
+        model.addAttribute(
+                "resources",
+                resourceRepository.findAll());
 
         return "dashboard";
     }

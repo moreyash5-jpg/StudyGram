@@ -222,183 +222,57 @@
 
                     <div class="resource-grid">
 
-                        <!-- CARD 1 -->
-                       <article class="resource-card" onclick="window.location.href='/resource/1'">
+                        <article class="resource-card" th:each="resource : ${resources}"
+                            th:onclick="|window.location.href='/resource/${resource.id}'|">
 
                             <div class="resource-preview preview-notes">
-                                <span class="resource-type">NOTES</span>
+
+                                <span class="resource-type" th:text="${resource.category}">
+                                    NOTES
+                                </span>
+
                                 <div class="fake-paper">
-                                    Data Structures<br>
-                                    & Algorithms
+
+                                    <span th:text="${resource.title}">
+                                        Resource Title
+                                    </span>
+
                                 </div>
+
                             </div>
+
 
                             <div class="resource-info">
 
-                                <h3>Data Structures Complete Notes</h3>
+                                <h3 th:text="${resource.title}">
+                                    Resource Title
+                                </h3>
 
-                                <p class="resource-subject">
-                                    Computer Science
+                                <p class="resource-subject" th:text="${resource.subject}">
+                                    Subject
                                 </p>
 
-                                <div class="resource-meta">
-                                    <span>♡ 342</span>
-                                    <span>🔖 1.2k</span>
-                                    <span class="file-type">PDF</span>
-                                </div>
-
-                            </div>
-
-                        </article>
-
-
-                        <!-- CARD 2 -->
-                        <article class="resource-card" onclick="window.location.href='/resource/2'">
-
-                            <div class="resource-preview preview-pyq">
-                                <span class="resource-type">PYQs</span>
-                                <div class="fake-paper">
-                                    Previous Year<br>
-                                    Question Paper
-                                </div>
-                            </div>
-
-                            <div class="resource-info">
-
-                                <h3>Engineering Mathematics PYQs</h3>
-
-                                <p class="resource-subject">
-                                    Mathematics
-                                </p>
 
                                 <div class="resource-meta">
-                                    <span>♡ 256</span>
-                                    <span>🔖 980</span>
-                                    <span class="file-type">PDF</span>
-                                </div>
 
-                            </div>
+                                    <span>
+                                        ♡
+                                        <span th:text="${resource.likes}">
+                                            0
+                                        </span>
+                                    </span>
 
-                        </article>
+                                    <span>
+                                        ↓
+                                        <span th:text="${resource.downloads}">
+                                            0
+                                        </span>
+                                    </span>
 
+                                    <span class="file-type">
+                                        PDF
+                                    </span>
 
-                        <!-- CARD 3 -->
-                        <article class="resource-card" onclick="window.location.href='/resource/3'">
-
-                            <div class="resource-preview preview-mindmap">
-                                <span class="resource-type">MINDMAP</span>
-                                <div class="mindmap">
-                                    <b>CORE<br>CONCEPTS</b>
-                                    <i>↗</i>
-                                    <i>↘</i>
-                                    <i>↙</i>
-                                    <i>↖</i>
-                                </div>
-                            </div>
-
-                            <div class="resource-info">
-
-                                <h3>Complete Revision Mindmap</h3>
-
-                                <p class="resource-subject">
-                                    Science
-                                </p>
-
-                                <div class="resource-meta">
-                                    <span>♡ 198</span>
-                                    <span>🔖 756</span>
-                                    <span class="file-type">PNG</span>
-                                </div>
-
-                            </div>
-
-                        </article>
-
-
-                        <!-- CARD 4 -->
-                        <article class="resource-card" onclick="window.location.href='/resource/4'">
-
-                            <div class="resource-preview preview-important">
-                                <span class="resource-type">IMPORTANT</span>
-                                <div class="fake-paper">
-                                    MOST<br>
-                                    IMPORTANT<br>
-                                    QUESTIONS
-                                </div>
-                            </div>
-
-                            <div class="resource-info">
-
-                                <h3>Top Important Questions</h3>
-
-                                <p class="resource-subject">
-                                    Mathematics
-                                </p>
-
-                                <div class="resource-meta">
-                                    <span>♡ 421</span>
-                                    <span>🔖 1.5k</span>
-                                    <span class="file-type">PDF</span>
-                                </div>
-
-                            </div>
-
-                        </article>
-
-
-                        <!-- CARD 5 -->
-                        <article class="resource-card" onclick="window.location.href='/resource/5'">
-
-                            <div class="resource-preview preview-paper">
-                                <span class="resource-type">LAST YEAR</span>
-                                <div class="fake-paper">
-                                    UNIVERSITY<br>
-                                    EXAM PAPER
-                                </div>
-                            </div>
-
-                            <div class="resource-info">
-
-                                <h3>Previous University Paper</h3>
-
-                                <p class="resource-subject">
-                                    General Studies
-                                </p>
-
-                                <div class="resource-meta">
-                                    <span>♡ 312</span>
-                                    <span>🔖 1.1k</span>
-                                    <span class="file-type">PDF</span>
-                                </div>
-
-                            </div>
-
-                        </article>
-
-
-                        <!-- CARD 6 -->
-                        <article class="resource-card" onclick="window.location.href='/resource/6'">
-
-                            <div class="resource-preview preview-cheat">
-                                <span class="resource-type">CHEATSHEET</span>
-                                <div class="fake-paper">
-                                    QUICK<br>
-                                    REVISION
-                                </div>
-                            </div>
-
-                            <div class="resource-info">
-
-                                <h3>Quick Revision Cheatsheet</h3>
-
-                                <p class="resource-subject">
-                                    Chemistry
-                                </p>
-
-                                <div class="resource-meta">
-                                    <span>♡ 189</span>
-                                    <span>🔖 642</span>
-                                    <span class="file-type">PDF</span>
                                 </div>
 
                             </div>
