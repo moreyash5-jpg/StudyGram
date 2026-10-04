@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Upload Resource | StudyGram</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="upload-page">
+
+    <div class="upload-container">
+
+        <a href="/dashboard" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+        <div class="upload-header">
+
+            <p class="eyebrow">SHARE KNOWLEDGE</p>
+
+            <h1>
+                Upload <span>Resource.</span>
+            </h1>
+
+            <p>
+                Share useful academic material with your fellow students.
+            </p>
+
+        </div>
+
+
+        <form action="/upload"
+              method="post"
+              enctype="multipart/form-data"
+              class="upload-form">
+
+
+            <div class="form-group">
+
+                <label for="title">
+                    Resource Title
+                </label>
+
+                <input
+                    id="title"
+                    type="text"
+                    name="title"
+                    placeholder="e.g. AOA Complete Revision Notes"
+                    required>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="category">
+                        Category
+                    </label>
+
+                    <select id="category" name="category" required>
+
+                        <option value="">Select Category</option>
+
+                        <option value="Notes">Notes</option>
+                        <option value="PYQs">PYQs</option>
+                        <option value="Mindmaps">Mindmaps</option>
+                        <option value="Important Questions">
+                            Important Questions
+                        </option>
+                        <option value="Last Year Papers">
+                            Last Year Papers
+                        </option>
+                        <option value="Cheatsheets">
+                            Cheatsheets
+                        </option>
+                        <option value="Short Notes">
+                            Short Notes
+                        </option>
+                        <option value="Formula Sheets">
+                            Formula Sheets
+                        </option>
+                        <option value="Question Banks">
+                            Question Banks
+                        </option>
+                        <option value="Study Guides">
+                            Study Guides
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="subject">
+                        Subject
+                    </label>
+
+                    <select id="subject" name="subject" required>
+
+                        <option value="">Select Subject</option>
+
+                        <option value="AOA">AOA</option>
+                        <option value="COA">COA</option>
+                        <option value="JAVA">JAVA</option>
+                        <option value="DSGT">DSGT</option>
+                        <option value="M3">M3</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="5"
+                    placeholder="Briefly describe this resource..."
+                    required></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="tags">
+                    Tags
+                </label>
+
+                <input
+                    id="tags"
+                    type="text"
+                    name="tags"
+                    placeholder="e.g. AOA, Algorithms, Revision">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="file">
+                    Upload PDF
+                </label>
+
+                <div class="file-upload-box">
+
+                    <input
+                        id="file"
+                        type="file"
+                        name="file"
+                        accept=".pdf"
+                        required>
+
+                    <p>
+                        PDF files only
+                        <span>•</span>
+                        Maximum size: 10 MB
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button type="submit" class="upload-submit">
+                ↑ &nbsp; Upload Resource
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title th:text="'StudyGram — ' + ${category}">
+        StudyGram — Resources
+    </title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+
+</head>
+
+<body>
+
+<div class="resource-list-page">
+
+    <div class="resource-list-container">
+
+        <!-- Back -->
+        <a href="/dashboard"
+           class="resource-back-link">
+            ← Back to Dashboard
+        </a>
+
+
+        <!-- Header -->
+        <header class="resource-list-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    STUDYGRAM LIBRARY
+                </p>
+
+                <h1>
+                    <span th:text="${category}">
+                        Notes
+                    </span>
+                </h1>
+
+                <p class="resource-list-subtitle">
+                    Explore academic resources shared by students.
+                </p>
+
+            </div>
+
+            <a href="/upload"
+               class="resource-upload-button">
+                + Upload Resource
+            </a>
+
+        </header>
+
+
+        <!-- Resource Count -->
+        <div class="resource-list-meta">
+
+            <span>
+                <strong th:text="${#lists.size(resources)}">
+                    0
+                </strong>
+                resources available
+            </span>
+
+        </div>
+
+
+        <!-- Empty State -->
+        <div class="resource-empty"
+             th:if="${#lists.isEmpty(resources)}">
+
+            <div class="empty-icon">
+                ∅
+            </div>
+
+            <h2>
+                No resources yet
+            </h2>
+
+            <p>
+                There are no resources in this category yet.
+                Be the first student to upload one.
+            </p>
+
+            <a href="/upload"
+               class="resource-upload-button">
+                Upload Resource
+            </a>
+
+        </div>
+
+
+        <!-- Resource List -->
+        <section class="resource-list"
+                 th:unless="${#lists.isEmpty(resources)}">
+
+            <article class="resource-list-card"
+                     th:each="resource : ${resources}">
+
+                <!-- Left -->
+                <div class="resource-list-main">
+
+                    <div class="resource-list-top">
+
+                        <span class="resource-category-badge"
+                              th:text="${resource.category}">
+                            NOTES
+                        </span>
+
+                        <span class="resource-subject-badge"
+                              th:text="${resource.subject}">
+                            AOA
+                        </span>
+
+                    </div>
+
+
+                    <h2 th:text="${resource.title}">
+                        AOA Complete Revision Notes
+                    </h2>
+
+
+                    <p class="resource-list-description"
+                       th:text="${resource.description}">
+                        Complete revision material for the subject.
+                    </p>
+
+
+                    <div class="resource-list-details">
+
+                        <span>
+                            By
+                            <strong th:text="${resource.uploader}">
+                                Student
+                            </strong>
+                        </span>
+
+                        <span>•</span>
+
+                        <span>
+                            ♥
+                            <span th:text="${resource.likes}">
+                                0
+                            </span>
+                        </span>
+
+                        <span>•</span>
+
+                        <span>
+                            ↓
+                            <span th:text="${resource.downloads}">
+                                0
+                            </span>
+                        </span>
+
+                        <span>•</span>
+
+                        <span class="pdf-label">
+                            PDF
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Right -->
+                <div class="resource-list-actions">
+
+                    <a th:href="@{'/resource/' + ${resource.id}}"
+                       class="resource-open-button">
+                        Open
+                    </a>
+
+                    <button type="button"
+                            class="resource-action-button">
+                        ♥ Like
+                    </button>
+
+                    <button type="button"
+                            class="resource-action-button">
+                        ↓ Download
+                    </button>
+
+                </div>
+
+            </article>
+
+        </section>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

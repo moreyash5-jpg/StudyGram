@@ -1,20 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>StudyGram — Home</title>
 
     <link rel="stylesheet" th:href="@{/css/style.css}">
+
 </head>
 
 <body>
 
     <div class="sg-app">
 
-        <!-- SIDEBAR -->
+        <!-- =========================
+         SIDEBAR
+         ========================= -->
+
         <aside class="sg-sidebar">
 
             <div class="sg-logo">
@@ -22,9 +27,10 @@
                 <span>StudyGram</span>
             </div>
 
+
             <nav class="sg-nav">
 
-                <a class="nav-item active" href="#">
+                <a class="nav-item active" href="/dashboard">
                     <span>⌂</span>
                     Home
                 </a>
@@ -40,16 +46,12 @@
                 </a>
 
                 <a class="nav-item" href="#">
-                    <span>♡</span>
-                    Bookmarks
-                </a>
-
-                <a class="nav-item" href="#">
                     <span>♙</span>
                     Profile
                 </a>
 
             </nav>
+
 
             <div class="sidebar-bottom">
 
@@ -68,43 +70,67 @@
         </aside>
 
 
-        <!-- MAIN AREA -->
+        <!-- =========================
+         MAIN AREA
+         ========================= -->
+
         <main class="sg-main">
 
             <!-- TOP BAR -->
+
             <header class="sg-topbar">
 
                 <div class="sg-search">
+
                     <span>⌕</span>
+
                     <input type="text" placeholder="Search notes, PYQs, mindmaps, subjects...">
+
                 </div>
 
+
                 <div class="sg-user">
-                    <div class="notification">♧</div>
+
+                    <div class="notification">
+                        ♧
+                    </div>
 
                     <div class="user-avatar">
+
                         <span th:text="${#strings.substring(session.userName, 0, 1)}">
                             Y
                         </span>
+
                     </div>
 
                     <span class="user-greeting">
-                        Hello, <strong th:text="${session.userName}">Student</strong>
+                        Hello,
+                        <strong th:text="${session.userName}">
+                            Student
+                        </strong>
                     </span>
+
                 </div>
 
             </header>
 
 
-            <!-- CONTENT -->
+            <!-- =========================
+             CONTENT
+             ========================= -->
+
             <div class="sg-content">
 
+
                 <!-- HERO -->
+
                 <section class="sg-hero">
 
                     <div class="hero-content">
 
-                        <p class="eyebrow">STUDY SMARTER</p>
+                        <p class="eyebrow">
+                            STUDY SMARTER
+                        </p>
 
                         <h1>
                             Your Academic<br>
@@ -116,107 +142,263 @@
                             to study better — all in one place.
                         </p>
 
+
                         <div class="hero-search">
 
                             <span>⌕</span>
 
                             <input type="text" placeholder="What are you looking for?">
 
-                            <button>Search</button>
+                            <button>
+                                Search
+                            </button>
 
                         </div>
 
                     </div>
 
+
                     <div class="hero-decoration">
+
                         <div class="deco-circle"></div>
+
                         <div class="deco-line"></div>
-                        <div class="deco-text">STUDY<br>BETTER</div>
+
+                        <div class="deco-text">
+                            STUDY<br>
+                            BETTER
+                        </div>
+
                     </div>
 
                 </section>
 
 
-                <!-- CATEGORIES -->
+                <!-- =========================
+                 CATEGORIES
+                 ========================= -->
+
                 <section class="sg-section">
 
                     <div class="section-heading">
+
                         <div>
-                            <p class="eyebrow">EXPLORE</p>
-                            <h2>Study Resources</h2>
+
+                            <p class="eyebrow">
+                                EXPLORE
+                            </p>
+
+                            <h2>
+                                Study Resources
+                            </h2>
+
                         </div>
 
-                        <a href="#">View all →</a>
+                        <a href="#">
+                            View all →
+                        </a>
+
                     </div>
 
 
                     <div class="category-grid">
 
-                        <div class="category-card">
-                            <div class="category-icon">▤</div>
-                            <span>Notes</span>
-                        </div>
 
-                        <div class="category-card">
-                            <div class="category-icon purple">▣</div>
-                            <span>PYQs</span>
-                        </div>
+                        <!-- NOTES -->
 
-                        <div class="category-card">
-                            <div class="category-icon green">✣</div>
-                            <span>Mindmaps</span>
-                        </div>
+                        <a href="/category/Notes" class="category-card">
 
-                        <div class="category-card">
-                            <div class="category-icon yellow">★</div>
-                            <span>Important Questions</span>
-                        </div>
+                            <div class="category-icon">
+                                ▤
+                            </div>
 
-                        <div class="category-card">
-                            <div class="category-icon blue">▤</div>
-                            <span>Last Year Papers</span>
-                        </div>
+                            <span>
+                                Notes
+                            </span>
 
-                        <div class="category-card">
-                            <div class="category-icon pink">ϟ</div>
-                            <span>Cheatsheets</span>
-                        </div>
+                        </a>
 
-                        <div class="category-card">
-                            <div class="category-icon teal">▧</div>
-                            <span>Short Notes</span>
-                        </div>
 
-                        <div class="category-card">
-                            <div class="category-icon violet">▦</div>
-                            <span>Formula Sheets</span>
-                        </div>
+                        <!-- PYQs -->
 
-                        <div class="category-card">
-                            <div class="category-icon orange">?</div>
-                            <span>Question Banks</span>
-                        </div>
+                        <a href="/category/PYQs" class="category-card">
 
-                        <div class="category-card">
-                            <div class="category-icon cyan">◈</div>
-                            <span>Study Guides</span>
-                        </div>
+                            <div class="category-icon purple">
+                                ▣
+                            </div>
+
+                            <span>
+                                PYQs
+                            </span>
+
+                        </a>
+
+
+                        <!-- MINDMAPS -->
+
+                        <a href="/category/Mindmaps" class="category-card">
+
+                            <div class="category-icon green">
+                                ✣
+                            </div>
+
+                            <span>
+                                Mindmaps
+                            </span>
+
+                        </a>
+
+
+                        <!-- IMPORTANT QUESTIONS -->
+
+                        <a th:href="@{/category/{category}(category='Important Questions')}" class="category-card">
+
+                            <div class="category-icon yellow">
+                                ★
+                            </div>
+
+                            <span>
+                                Important Questions
+                            </span>
+
+                        </a>
+
+
+                        <!-- LAST YEAR PAPERS -->
+
+                        <a th:href="@{/category/{category}(category='Last Year Papers')}" class="category-card">
+
+                            <div class="category-icon blue">
+                                ▤
+                            </div>
+
+                            <span>
+                                Last Year Papers
+                            </span>
+
+                        </a>
+
+
+                        <!-- CHEATSHEETS -->
+
+                        <a th:href="@{/category/{category}(category='Cheatsheets')}" class="category-card">
+
+                            <div class="category-icon pink">
+                                ϟ
+                            </div>
+
+                            <span>
+                                Cheatsheets
+                            </span>
+
+                        </a>
+
+
+                        <!-- SHORT NOTES -->
+
+                        <a th:href="@{/category/{category}(category='Short Notes')}" class="category-card">
+
+                            <div class="category-icon teal">
+                                ▧
+                            </div>
+
+                            <span>
+                                Short Notes
+                            </span>
+
+                        </a>
+
+
+                        <!-- FORMULA SHEETS -->
+
+                        <a th:href="@{/category/{category}(category='Formula Sheets')}" class="category-card">
+
+                            <div class="category-icon violet">
+                                ▦
+                            </div>
+
+                            <span>
+                                Formula Sheets
+                            </span>
+
+                        </a>
+
+
+                        <!-- QUESTION BANKS -->
+
+                        <a th:href="@{/category/{category}(category='Question Banks')}" class="category-card">
+
+                            <div class="category-icon orange">
+                                ?
+                            </div>
+
+                            <span>
+                                Question Banks
+                            </span>
+
+                        </a>
+
+
+                        <!-- STUDY GUIDES -->
+
+                        <a th:href="@{/category/{category}(category='Study Guides')}" class="category-card">
+
+                            <div class="category-icon cyan">
+                                ◈
+                            </div>
+
+                            <span>
+                                Study Guides
+                            </span>
+
+                        </a>
+
+
+                        <!-- ASSIGNMENTS -->
+
+                        <a href="/category/Assignments" class="category-card">
+
+                            <div class="category-icon red">
+                                ⚑
+                            </div>
+
+                            <span>
+                                Assignments
+                            </span>
+
+                        </a>
+
 
                     </div>
 
                 </section>
 
 
-                <!-- RESOURCE FEED -->
+
+                <!-- =========================
+     QUICK ACCESS RESOURCES
+     ========================= -->
+
                 <section class="sg-section">
 
                     <div class="section-heading">
+
                         <div>
-                            <p class="eyebrow">DISCOVER</p>
-                            <h2>Trending Resources</h2>
+
+                            <p class="eyebrow">
+                                QUICK ACCESS
+                            </p>
+
+                            <h2>
+                                Trending Resources
+                            </h2>
+
                         </div>
 
-                        <a href="#">View all →</a>
+                        <a href="#">
+                            Explore all →
+                        </a>
+
                     </div>
 
 
@@ -225,7 +407,12 @@
                         <article class="resource-card" th:each="resource : ${resources}"
                             th:onclick="|window.location.href='/resource/${resource.id}'|">
 
-                            <div class="resource-preview preview-notes">
+                            <div class="resource-preview" th:classappend="${resource.category == 'PYQs'} ? ' preview-pyqs' :
+                 (${resource.category == 'Mindmaps'} ? ' preview-mindmap' :
+                 (${resource.category == 'Cheatsheets'} ? ' preview-cheatsheet' :
+                 (${resource.category == 'Formula Sheets'} ? ' preview-formula' :
+                 (${resource.category == 'Important Questions'} ? ' preview-questions' :
+                 ' preview-notes'))))">
 
                                 <span class="resource-type" th:text="${resource.category}">
                                     NOTES
@@ -283,111 +470,217 @@
 
                 </section>
 
-            </div>
+                <!-- =========================
+         RIGHT PANEL
+         ========================= -->
 
-        </main>
-
-
-        <!-- RIGHT PANEL -->
-        <aside class="sg-right-panel">
-
-            <div class="welcome-box">
-
-                <h3>
-                    Good to see you,
-                    <span th:text="${session.userName}">Student</span>!
-                </h3>
-
-                <p>Keep going. You're doing great.</p>
-
-                <div class="quote">
-                    <strong>“</strong>
-                    <span>Small steps every day lead to big results.</span>
-                </div>
-
-            </div>
+                <aside class="sg-right-panel">
 
 
-            <div class="side-box">
+                    <!-- WELCOME -->
 
-                <div class="side-heading">
-                    <h3>Trending Now</h3>
-                </div>
+                    <div class="welcome-box">
 
-                <div class="trend-item">
-                    <b>01</b>
-                    <div>
-                        <strong>DSA Notes</strong>
-                        <small>Computer Science</small>
+                        <h3>
+
+                            Good to see you,
+
+                            <span th:text="${session.userName}">
+                                Student
+                            </span>!
+
+                        </h3>
+
+                        <p>
+                            Keep going. You're doing great.
+                        </p>
+
+
+                        <div class="quote">
+
+                            <strong>
+                                “
+                            </strong>
+
+                            <span>
+                                Small steps every day lead to big results.
+                            </span>
+
+                        </div>
+
                     </div>
-                </div>
 
-                <div class="trend-item">
-                    <b>02</b>
-                    <div>
-                        <strong>Engineering PYQs</strong>
-                        <small>Mathematics</small>
-                    </div>
-                </div>
 
-                <div class="trend-item">
-                    <b>03</b>
-                    <div>
-                        <strong>Mindmaps</strong>
-                        <small>Science</small>
-                    </div>
-                </div>
+                    <!-- TRENDING -->
 
-                <div class="trend-item">
-                    <b>04</b>
-                    <div>
-                        <strong>Important Questions</strong>
-                        <small>Engineering</small>
+                    <div class="side-box">
+
+                        <div class="side-heading">
+
+                            <h3>
+                                Trending Now
+                            </h3>
+
+                        </div>
+
+
+                        <div class="trend-item">
+
+                            <b>
+                                01
+                            </b>
+
+                            <div>
+
+                                <strong>
+                                    DSA Notes
+                                </strong>
+
+                                <small>
+                                    Computer Science
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="trend-item">
+
+                            <b>
+                                02
+                            </b>
+
+                            <div>
+
+                                <strong>
+                                    Engineering PYQs
+                                </strong>
+
+                                <small>
+                                    Mathematics
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="trend-item">
+
+                            <b>
+                                03
+                            </b>
+
+                            <div>
+
+                                <strong>
+                                    Mindmaps
+                                </strong>
+
+                                <small>
+                                    Science
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="trend-item">
+
+                            <b>
+                                04
+                            </b>
+
+                            <div>
+
+                                <strong>
+                                    Important Questions
+                                </strong>
+
+                                <small>
+                                    Engineering
+                                </small>
+
+                            </div>
+
+                        </div>
+
                     </div>
-                </div>
+
+
+                    <!-- QUICK ACTIONS -->
+
+                    <div class="side-box">
+
+                        <div class="side-heading">
+
+                            <h3>
+                                Quick Actions
+                            </h3>
+
+                        </div>
+
+
+                        <a href="/upload" class="action-button primary">
+
+                            Upload Resource
+
+                        </a>
+
+
+                        <button class="action-button">
+
+                            ▱ &nbsp; My Uploads
+
+                            <span>
+                                →
+                            </span>
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- MOTIVATION -->
+
+                    <div class="motivation-box">
+
+                        <span>
+                            ✦
+                        </span>
+
+                        <p>
+
+                            Good notes today,<br>
+                            greater opportunities<br>
+                            tomorrow.
+
+                        </p>
+
+                    </div>
+
+
+                </aside>
 
             </div>
-
-
-            <div class="side-box">
-
-                <div class="side-heading">
-                    <h3>Quick Actions</h3>
-                </div>
-
-                <button class="action-button primary">
-                    ↑ &nbsp; Upload Resource
-                </button>
-
-                <button class="action-button">
-                    ♡ &nbsp; My Bookmarks
-                    <span>→</span>
-                </button>
-
-                <button class="action-button">
-                    ▱ &nbsp; My Uploads
-                    <span>→</span>
-                </button>
-
-            </div>
-
-
-            <div class="motivation-box">
-
-                <span>✦</span>
-
-                <p>
-                    Good notes today,<br>
-                    greater opportunities<br>
-                    tomorrow.
-                </p>
-
-            </div>
-
-        </aside>
-
-    </div>
-
-</body>
+<div class="site-credit">
+    Created by Yash and Shubham
+</div>
+<style>
+.site-credit {
+    text-align: center;
+    margin-top: 5px;
+    padding: 20px 0 30px;
+    color: #A1A1AA;
+    font-size: 15px;
+    font-weight: 600;
+    opacity: 0.7;
+    letter-spacing: 0.2px;
+}
+</style>
+ 
+ </body>
 
 </html>
