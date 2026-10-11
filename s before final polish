@@ -1,0 +1,8 @@
+warning: in the working copy of 'src/main/resources/application.properties', LF will be replaced by CRLF the next time Git touches it
+ .../com/studygram/controller/HomeController.java   |  364 [32m++++[m[31m---[m
+ src/main/resources/application.properties          |    5 [32m+[m[31m-[m
+ src/main/resources/static/css/style.css            |  348 [32m++++++[m
+ src/main/resources/templates/dashboard.html        | 1104 [32m+++++++++++[m[31m---------[m
+ src/main/resources/templates/login.html            |    5 [32m+[m
+ src/main/resources/templates/resource.html         |  103 [32m+[m[31m-[m
+ 6 files changed, 1275 insertions(+), 654 deletions(-)

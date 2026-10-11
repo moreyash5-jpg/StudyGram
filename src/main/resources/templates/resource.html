@@ -98,9 +98,7 @@
 
                 <!-- TAGS -->
                 <div class="resource-tags">
-                    <span
-                        th:each="tag : ${#strings.arraySplit(resource.tags, ',')}"
-                        th:text="${tag.trim()}">
+                    <span th:each="tag : ${#strings.arraySplit(resource.tags, ',')}" th:text="${tag.trim()}">
                         DSA
                     </span>
                 </div>
@@ -120,27 +118,27 @@
                     </div>
 
                 </div>
+                <p th:if="${param.reported != null}"
+                    style="padding:12px; background:#ecfdf3; color:#067647; border-radius:8px;">
+                    Report submitted successfully. Thank you for helping keep StudyGram safe.
+                </p>
 
+                <p th:if="${param.error != null}"
+                    style="padding:12px; background:#fff0f0; color:#b42318; border-radius:8px;">
+                    Please select a valid report reason.
+                </p>
                 <!-- ACTIONS -->
                 <div class="resource-actions">
 
                     <!-- DOWNLOAD -->
-                    <a
-                        th:href="@{/resource/{id}/download(id=${resource.id})}"
-                        class="download-button">
+                    <a th:href="@{/resource/{id}/download(id=${resource.id})}" class="download-button">
                         ↓ &nbsp; Download PDF
                     </a>
 
                     <!-- HEART BUTTON: LIKE RESOURCE -->
-                    <form
-                        th:action="@{/resource/{id}/like(id=${resource.id})}"
-                        method="post"
-                        class="heart-like-form">
+                    <form th:action="@{/resource/{id}/like(id=${resource.id})}" method="post" class="heart-like-form">
 
-                        <button
-                            type="submit"
-                            class="bookmark-button"
-                            title="Like this resource"
+                        <button type="submit" class="bookmark-button" title="Like this resource"
                             aria-label="Like this resource">
                             ♡
                         </button>
@@ -148,6 +146,79 @@
                     </form>
 
                 </div>
+
+                <!-- REPORT RESOURCE -->
+                <details class="report-resource">
+                    <summary>⚑ Report this resource</summary>
+
+                    <form th:action="@{/resource/{id}/report(id=${resource.id})}" method="post" class="report-form">
+
+                        <label for="reportReason">Reason</label>
+                        <select id="reportReason" name="reason" required>
+                            <option value="">Choose a reason</option>
+                            <option value="Copyright">Copyright or ownership issue</option>
+                            <option value="Inappropriate">Inappropriate content</option>
+                            <option value="Misleading">Misleading or incorrect material</option>
+                            <option value="Spam">Spam or duplicate resource</option>
+                            <option value="Other">Other</option>
+                        </select>
+
+                        <label for="reportDetails">Additional details (optional)</label>
+                        <textarea id="reportDetails" name="details" maxlength="1000" rows="3"
+                            placeholder="Tell us what is wrong..."></textarea>
+
+                        <button type="submit">Submit report</button>
+                    </form>
+                </details>
+
+                <style>
+                    .report-resource {
+                        margin-top: 22px;
+                        padding: 16px;
+                        border: 1px solid #f0e1d6;
+                        border-radius: 12px;
+                        background: #fffaf6;
+                    }
+
+                    .report-resource summary {
+                        cursor: pointer;
+                        color: #d95716;
+                        font-weight: 700;
+                    }
+
+                    .report-form {
+                        display: grid;
+                        gap: 10px;
+                        margin-top: 16px;
+                    }
+
+                    .report-form label {
+                        font-size: 14px;
+                        font-weight: 700;
+                    }
+
+                    .report-form select,
+                    .report-form textarea {
+                        width: 100%;
+                        box-sizing: border-box;
+                        padding: 11px;
+                        border: 1px solid #eadbd0;
+                        border-radius: 8px;
+                        background: white;
+                        font: inherit;
+                    }
+
+                    .report-form button {
+                        padding: 12px;
+                        border: 0;
+                        border-radius: 9px;
+                        background: #f56a1b;
+                        color: white;
+                        font-weight: 700;
+                        cursor: pointer;
+                    }
+                </style>
+
 
                 <!-- STATS -->
                 <div class="resource-stats">

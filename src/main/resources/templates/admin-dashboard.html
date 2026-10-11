@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | StudyGram</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: #fffaf6;
+            color: #252b3b;
+            font-family: Arial, sans-serif;
+        }
+
+        .admin-topbar {
+            min-height: 78px;
+            padding: 18px 5%;
+            background: #fff;
+            border-bottom: 1px solid #f1e4da;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .admin-brand {
+            color: #f56a1b;
+            font-size: 25px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .admin-topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .admin-identity {
+            color: #777d8c;
+            font-size: 14px;
+        }
+
+        .admin-logout {
+            padding: 11px 16px;
+            border: 0;
+            border-radius: 9px;
+            background: #f56a1b;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .admin-logout:hover,
+        .small-button:hover {
+            background: #df5810;
+        }
+
+        .admin-main {
+            width: min(1400px, 92%);
+            margin: 34px auto;
+        }
+
+        .admin-eyebrow {
+            color: #f56a1b;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+
+        .admin-heading { margin-bottom: 26px; }
+
+        .admin-heading h1 {
+            margin: 0 0 8px;
+            font-size: clamp(27px, 4vw, 35px);
+        }
+
+        .admin-heading p {
+            margin: 0;
+            color: #777d8c;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            padding: 23px;
+            background: #fff;
+            border: 1px solid #f0e4dc;
+            border-radius: 16px;
+        }
+
+        .stat-icon {
+            display: flex;
+            width: 42px;
+            height: 42px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            background: #fff0e5;
+            color: #f56a1b;
+            font-size: 21px;
+        }
+
+        .stat-label {
+            color: #777d8c;
+            font-size: 14px;
+        }
+
+        .stat-value {
+            margin-top: 9px;
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .admin-panel {
+            margin-bottom: 27px;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid #f0e4dc;
+            border-radius: 16px;
+        }
+
+        .panel-heading {
+            padding: 22px 24px;
+            border-bottom: 1px solid #f2e9e3;
+        }
+
+        .panel-heading h2 {
+            margin: 0 0 7px;
+            font-size: 20px;
+        }
+
+        .panel-heading p {
+            margin: 0;
+            color: #777d8c;
+            font-size: 14px;
+        }
+
+        .admin-message {
+            padding: 13px 16px;
+            margin-bottom: 20px;
+            border-radius: 9px;
+            background: #eaf8ef;
+            color: #17683b;
+        }
+
+        .table-wrap { overflow-x: auto; }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .admin-table th {
+            padding: 14px 17px;
+            background: #fffaf6;
+            color: #777d8c;
+            font-size: 11px;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .admin-table td {
+            padding: 16px 17px;
+            border-top: 1px solid #f2ebe6;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        .resource-title {
+            min-width: 170px;
+            font-weight: 700;
+        }
+
+        .category-pill {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #fff0e5;
+            color: #c9520b;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 6px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .status-pending { background: #fff2d5; color: #8c5b00; }
+        .status-reviewed { background: #e8f1ff; color: #2459a9; }
+        .status-resolved { background: #e5f7eb; color: #18713a; }
+
+        .action-form {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .status-select {
+            max-width: 125px;
+            padding: 8px;
+            border: 1px solid #e6ddd6;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .small-button {
+            padding: 9px 11px;
+            border: 0;
+            border-radius: 8px;
+            background: #f56a1b;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .delete-button {
+            padding: 9px 11px;
+            border: 1px solid #ffd7d0;
+            border-radius: 8px;
+            background: #fff5f3;
+            color: #c53e2c;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .delete-button:hover { background: #ffe6e1; }
+
+        .empty-state {
+            padding: 35px 20px !important;
+            text-align: center;
+            color: #777d8c;
+        }
+
+        .report-details {
+            min-width: 180px;
+            max-width: 280px;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            color: #686f7d;
+        }
+
+        .moderation-cell { min-width: 145px; }
+
+        .filter-area {
+            padding: 20px 24px;
+            background: #fff;
+            border-bottom: 1px solid #f2e9e3;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: minmax(220px, 2fr) repeat(2, minmax(150px, 1fr)) auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .filter-field label {
+            display: block;
+            margin-bottom: 7px;
+            color: #555d6c;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .filter-field input,
+        .filter-field select {
+            width: 100%;
+            min-height: 42px;
+            padding: 10px 12px;
+            border: 1px solid #e6ddd6;
+            border-radius: 9px;
+            background: white;
+            color: #252b3b;
+            font: inherit;
+            font-size: 13px;
+        }
+
+        .filter-field input:focus,
+        .filter-field select:focus {
+            outline: 2px solid #ffd4b9;
+            border-color: #f56a1b;
+        }
+
+        .clear-button {
+            min-height: 42px;
+            padding: 10px 15px;
+            border: 1px solid #e6ddd6;
+            border-radius: 9px;
+            background: #fff;
+            color: #4c5360;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .filter-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 24px;
+            color: #777d8c;
+            font-size: 13px;
+        }
+
+        .no-filter-results { display: none; }
+
+        .analytics-section { margin: 30px 0; }
+
+        .analytics-section h2 {
+            margin-bottom: 6px;
+            color: #242424;
+        }
+
+        .analytics-subtitle {
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .analytics-card,
+        .analytics-panel {
+            background: #fff;
+            border: 1px solid #f0e5dc;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.035);
+        }
+
+        .analytics-card {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .analytics-card span { color: #777; font-size: 14px; }
+        .analytics-card strong { color: #f47721; font-size: 30px; }
+
+        .analytics-card small,
+        .top-resource-info small { color: #888; }
+
+        .analytics-panels {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .analytics-panel h3 {
+            margin: 0 0 20px;
+            font-size: 17px;
+        }
+
+        .bar-row {
+            display: grid;
+            grid-template-columns: minmax(75px, 110px) minmax(30px, 1fr) 28px;
+            align-items: center;
+            gap: 10px;
+            margin: 16px 0;
+            font-size: 13px;
+        }
+
+        .bar-row > span { overflow-wrap: anywhere; }
+
+        .bar-track {
+            width: 100%;
+            height: 10px;
+            background: #f3f3f3;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            min-width: 0;
+            border-radius: 20px;
+            transition: width .3s ease;
+        }
+
+        .pending-bar { background: #f0a23a; }
+        .reviewed-bar { background: #5597e8; }
+        .resolved-bar { background: #42ad79; }
+        .category-bar { background: #f47721; }
+
+        .analytics-empty { color: #888; font-size: 14px; padding: 10px 0; }
+
+        .top-resource-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .top-resource-row:last-child { border-bottom: none; }
+
+        .resource-rank {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            background: #fff0e5;
+            color: #f47721;
+            font-weight: 700;
+        }
+
+        .top-resource-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .top-resource-info strong { overflow-wrap: anywhere; }
+
+        .top-resource-stats {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+            color: #777;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .top-resource-stats strong { color: #333; }
+
+        @media (max-width: 900px) {
+            .filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .analytics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .analytics-panels { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 760px) {
+            .admin-stats { grid-template-columns: 1fr; }
+            .admin-main { width: 94%; margin: 24px auto; }
+            .admin-topbar { padding: 16px 4%; }
+            .admin-identity { display: none; }
+            .admin-brand { font-size: 21px; }
+            .panel-heading { padding: 18px; }
+            .filter-area { padding: 16px; }
+            .filter-grid { grid-template-columns: 1fr; }
+            .filter-summary { padding: 13px 16px; }
+        }
+
+        @media (max-width: 480px) {
+            .analytics-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .analytics-card { padding: 14px; }
+            .analytics-card strong { font-size: 24px; }
+            .bar-row { grid-template-columns: 80px minmax(20px, 1fr) 22px; gap: 7px; }
+            .top-resource-row { align-items: flex-start; flex-wrap: wrap; }
+            .top-resource-stats {
+                width: 100%;
+                padding-left: 46px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="admin-topbar">
+    <a class="admin-brand" th:href="@{/admin/dashboard}">
+        StudyGram <span style="color:#252b3b">Admin</span>
+    </a>
+
+    <div class="admin-topbar-right">
+        <span class="admin-identity">
+            Signed in as
+            <strong th:text="${adminUsername}">Admin</strong>
+        </span>
+
+        <!-- Secure POST logout -->
+        <form th:action="@{/admin/logout}" method="post" style="margin:0">
+            <input th:if="${_csrf != null}"
+                   type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}">
+            <button class="admin-logout" type="submit">Log out ↗</button>
+        </form>
+    </div>
+</header>
+
+<main class="admin-main">
+
+    <section class="admin-heading">
+        <div class="admin-eyebrow">ADMINISTRATION</div>
+        <h1>Dashboard overview</h1>
+        <p>Manage resources and review reports submitted by students.</p>
+    </section>
+
+    <div class="admin-message" th:if="${adminMessage}" th:text="${adminMessage}"></div>
+
+    <section class="admin-stats">
+        <article class="stat-card">
+            <div class="stat-icon">♙</div>
+            <div class="stat-label">Registered students</div>
+            <div class="stat-value" th:text="${totalStudents}">0</div>
+        </article>
+        <article class="stat-card">
+            <div class="stat-icon">▤</div>
+            <div class="stat-label">Study resources</div>
+            <div class="stat-value" th:text="${totalResources}">0</div>
+        </article>
+        <article class="stat-card">
+            <div class="stat-icon">⚑</div>
+            <div class="stat-label">Pending reports</div>
+            <div class="stat-value" th:text="${pendingReports}">0</div>
+        </article>
+    </section>
+
+    <!-- RESOURCE MANAGEMENT -->
+    <section class="admin-panel" id="resources">
+        <div class="panel-heading">
+            <h2>Resource management</h2>
+            <p>Review uploaded study material and remove resources when necessary.</p>
+        </div>
+
+        <div class="table-wrap">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Resource</th><th>Category</th><th>Uploader</th>
+                    <th>Downloads</th><th>Likes</th><th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="resource : ${resources}">
+                    <td class="resource-title" th:text="${resource.title}">Resource</td>
+                    <td><span class="category-pill" th:text="${resource.category}">Notes</span></td>
+                    <td th:text="${resource.uploader}">Student</td>
+                    <td th:text="${resource.downloads}">0</td>
+                    <td th:text="${resource.likes}">0</td>
+                    <td>
+                        <form th:action="@{/admin/resources/{id}/delete(id=${resource.id})}"
+                              method="post"
+                              onsubmit="return confirm('Delete this resource and its associated reports?');">
+                            <input th:if="${_csrf != null}" type="hidden"
+                                   th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                            <button class="delete-button" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(resources)}">
+                    <td colspan="6" class="empty-state">No resources found.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- PLATFORM ANALYTICS -->
+    <section id="analytics" class="analytics-section">
+        <h2>Platform Analytics</h2>
+        <p class="analytics-subtitle">Overview of StudyGram activity and content performance</p>
+
+        <div class="analytics-grid">
+            <div class="analytics-card">
+                <span>Total Downloads</span>
+                <strong th:text="${totalDownloads}">0</strong>
+                <small>Resource downloads</small>
+            </div>
+            <div class="analytics-card">
+                <span>Total Likes</span>
+                <strong th:text="${totalLikes}">0</strong>
+                <small>Likes across resources</small>
+            </div>
+            <div class="analytics-card">
+                <span>Pending Reports</span>
+                <strong th:text="${pendingReports}">0</strong>
+                <small>Awaiting review</small>
+            </div>
+            <div class="analytics-card">
+                <span>Resolved Reports</span>
+                <strong th:text="${resolvedReports}">0</strong>
+                <small>Marked resolved</small>
+            </div>
+        </div>
+
+        <div class="analytics-panels">
+            <div class="analytics-panel">
+                <h3>Reports by Status</h3>
+                <div class="bar-row">
+                    <span>Pending</span>
+                    <div class="bar-track">
+                        <div class="bar-fill pending-bar"
+                             th:style="'width:' + (${totalReports > 0 ? pendingReports * 100.0 / totalReports : 0}) + '%'"></div>
+                    </div>
+                    <strong th:text="${pendingReports}">0</strong>
+                </div>
+                <div class="bar-row">
+                    <span>Reviewed</span>
+                    <div class="bar-track">
+                        <div class="bar-fill reviewed-bar"
+                             th:style="'width:' + (${totalReports > 0 ? reviewedReports * 100.0 / totalReports : 0}) + '%'"></div>
+                    </div>
+                    <strong th:text="${reviewedReports}">0</strong>
+                </div>
+                <div class="bar-row">
+                    <span>Resolved</span>
+                    <div class="bar-track">
+                        <div class="bar-fill resolved-bar"
+                             th:style="'width:' + (${totalReports > 0 ? resolvedReports * 100.0 / totalReports : 0}) + '%'"></div>
+                    </div>
+                    <strong th:text="${resolvedReports}">0</strong>
+                </div>
+            </div>
+
+            <div class="analytics-panel">
+                <h3>Resources by Category</h3>
+                <div th:if="${#maps.isEmpty(resourcesByCategory)}" class="analytics-empty">
+                    No resources available yet.
+                </div>
+                <div class="bar-row" th:each="entry : ${resourcesByCategory}">
+                    <span th:text="${entry.key}">Category</span>
+                    <div class="bar-track">
+                        <div class="bar-fill category-bar"
+                             th:style="'width:' + (${totalResources > 0 ? entry.value * 100.0 / totalResources : 0}) + '%'"></div>
+                    </div>
+                    <strong th:text="${entry.value}">0</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="analytics-panel">
+            <h3>Top 5 Downloaded Resources</h3>
+            <div th:if="${#lists.isEmpty(topResources)}" class="analytics-empty">
+                No resources available yet.
+            </div>
+            <div class="top-resource-row" th:each="resource, stat : ${topResources}">
+                <span class="resource-rank" th:text="${stat.count}">1</span>
+                <div class="top-resource-info">
+                    <strong th:text="${resource.title}">Resource title</strong>
+                    <small th:text="${resource.category}">Category</small>
+                </div>
+                <div class="top-resource-stats">
+                    <span><strong th:text="${resource.downloads}">0</strong> downloads</span>
+                    <span><strong th:text="${resource.likes}">0</strong> likes</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STUDENT REPORTS -->
+    <section class="admin-panel" id="reports">
+        <div class="panel-heading">
+            <h2>Student reports</h2>
+            <p>Search reports, filter by status or reason, and moderate reported resources.</p>
+        </div>
+
+        <div class="filter-area">
+            <div class="filter-grid">
+                <div class="filter-field">
+                    <label for="reportSearch">Search reports</label>
+                    <input id="reportSearch" type="search"
+                           placeholder="Resource title or reporter email...">
+                </div>
+                <div class="filter-field">
+                    <label for="statusFilter">Filter by status</label>
+                    <select id="statusFilter">
+                        <option value="">All statuses</option>
+                        <option value="PENDING">Pending</option>
+                        <option value="REVIEWED">Reviewed</option>
+                        <option value="RESOLVED">Resolved</option>
+                    </select>
+                </div>
+                <div class="filter-field">
+                    <label for="reasonFilter">Filter by reason</label>
+                    <select id="reasonFilter">
+                        <option value="">All reasons</option>
+                        <option value="Copyright">Copyright</option>
+                        <option value="Inappropriate">Inappropriate</option>
+                        <option value="Misleading">Misleading</option>
+                        <option value="Spam">Spam</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <button class="clear-button" type="button" id="clearFilters">Clear filters</button>
+            </div>
+        </div>
+
+        <div class="filter-summary">
+            <span id="reportCount" aria-live="polite">Showing reports</span>
+            <span>Filters update automatically</span>
+        </div>
+
+        <div class="table-wrap">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Resource</th><th>Reporter</th><th>Reason</th><th>Details</th>
+                    <th>Submitted</th><th>Status</th><th>Update status</th><th>Moderation</th>
+                </tr>
+                </thead>
+                <tbody id="reportTableBody">
+                <tr class="report-row"
+                    th:each="report : ${reports}"
+                    th:attr="data-title=${report.resource != null ? report.resource.title : ''},
+                             data-email=${report.reporterEmail},
+                             data-reason=${report.reason},
+                             data-status=${report.status}">
+                    <td class="resource-title"
+                        th:text="${report.resource != null ? report.resource.title : 'Resource unavailable'}">Resource</td>
+                    <td th:text="${report.reporterEmail}">student@example.com</td>
+                    <td th:text="${report.reason}">Spam</td>
+                    <td class="report-details"
+                        th:text="${#strings.isEmpty(report.details) ? 'No additional details' : report.details}">Report details</td>
+                    <td th:text="${report.reportedAt != null ? #temporals.format(report.reportedAt, 'dd MMM yyyy HH:mm') : 'Unknown'}">01 Jan 2026</td>
+                    <td>
+                        <span class="status-pill"
+                              th:classappend="${report.status == 'PENDING' ? ' status-pending' : (report.status == 'REVIEWED' ? ' status-reviewed' : ' status-resolved')}"
+                              th:text="${report.status}">PENDING</span>
+                    </td>
+                    <td>
+                        <form class="action-form"
+                              th:action="@{/admin/reports/{id}/status(id=${report.id})}" method="post">
+                            <input th:if="${_csrf != null}" type="hidden"
+                                   th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                            <select class="status-select" name="status" required>
+                                <option value="PENDING" th:selected="${report.status == 'PENDING'}">Pending</option>
+                                <option value="REVIEWED" th:selected="${report.status == 'REVIEWED'}">Reviewed</option>
+                                <option value="RESOLVED" th:selected="${report.status == 'RESOLVED'}">Resolved</option>
+                            </select>
+                            <button class="small-button" type="submit">Save</button>
+                        </form>
+                    </td>
+                    <td class="moderation-cell">
+                        <form th:action="@{/admin/reports/{id}/delete-resource(id=${report.id})}"
+                              method="post"
+                              onsubmit="return confirm('Permanently delete this resource and all associated reports?');">
+                            <input th:if="${_csrf != null}" type="hidden"
+                                   th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                            <button class="delete-button" type="submit">Delete resource</button>
+                        </form>
+                    </td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(reports)}">
+                    <td colspan="8" class="empty-state">No student reports yet.</td>
+                </tr>
+                <tr id="noFilterResults" class="no-filter-results">
+                    <td colspan="8" class="empty-state">No reports match your search or filters.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("reportSearch");
+        const statusFilter = document.getElementById("statusFilter");
+        const reasonFilter = document.getElementById("reasonFilter");
+        const clearButton = document.getElementById("clearFilters");
+        const reportCount = document.getElementById("reportCount");
+        const noResults = document.getElementById("noFilterResults");
+
+        const rows = Array.from(
+            document.querySelectorAll("#reportTableBody .report-row")
+        );
+
+        function filterReports() {
+            const query = searchInput.value.trim().toLowerCase();
+            const selectedStatus = statusFilter.value.toUpperCase();
+            const selectedReason = reasonFilter.value.toLowerCase();
+            let visibleCount = 0;
+
+            rows.forEach(function (row) {
+                const title = (row.dataset.title || "").toLowerCase();
+                const email = (row.dataset.email || "").toLowerCase();
+                const reason = (row.dataset.reason || "").toLowerCase();
+                const status = (row.dataset.status || "").toUpperCase();
+
+                const matchesSearch =
+                    !query || title.includes(query) || email.includes(query);
+                const matchesStatus =
+                    !selectedStatus || status === selectedStatus;
+                const matchesReason =
+                    !selectedReason || reason === selectedReason;
+
+                const visible = matchesSearch && matchesStatus && matchesReason;
+                row.style.display = visible ? "" : "none";
+
+                if (visible) visibleCount++;
+            });
+
+            reportCount.textContent =
+                "Showing " + visibleCount + " of " + rows.length + " reports";
+
+            noResults.style.display =
+                rows.length > 0 && visibleCount === 0 ? "table-row" : "none";
+        }
+
+        searchInput.addEventListener("input", filterReports);
+        statusFilter.addEventListener("change", filterReports);
+        reasonFilter.addEventListener("change", filterReports);
+
+        clearButton.addEventListener("click", function () {
+            searchInput.value = "";
+            statusFilter.value = "";
+            reasonFilter.value = "";
+            filterReports();
+        });
+
+        filterReports();
+    });
+</script>
+
+</body>
+</html>

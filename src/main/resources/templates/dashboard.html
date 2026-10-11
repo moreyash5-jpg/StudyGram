@@ -1,136 +1,445 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>StudyGram — Home</title>
-
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
+    <style>
+        /* =========================
+           NOTIFICATIONS
+        ========================= */
+
+        .notification-link {
+            color: #d4d4d8;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: color .2s ease;
+        }
+
+        .notification-link:hover {
+            color: #ff4d1d;
+        }
+
+        .notification-count {
+            color: #ff7047;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        /* =========================
+           REPORT SECTION
+        ========================= */
+
+        .report-section {
+            margin: 30px 0;
+            padding: 30px;
+            background: #111113;
+            border: 1px solid #29292f;
+            border-radius: 20px;
+            color: #f4f4f5;
+            scroll-margin-top: 110px;
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, .18),
+                0 0 18px rgba(255, 77, 29, .025);
+        }
+
+        .report-section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 26px;
+        }
+
+        .report-section-heading .eyebrow {
+            color: #ff4d1d;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 9px;
+        }
+
+        .report-section-heading h2 {
+            margin: 0;
+            color: #fafafa;
+            font-size: 25px;
+            font-weight: 750;
+            letter-spacing: -.5px;
+        }
+
+        .report-count {
+            color: #a1a1aa;
+            font-size: 14px;
+            margin-top: 9px;
+            line-height: 1.6;
+        }
+
+        .report-list {
+            display: grid;
+            gap: 18px;
+        }
+
+        /* =========================
+           INDIVIDUAL REPORT CARD
+           SUBTLE ORANGE EDGE GLOW
+        ========================= */
+
+        .report-item {
+            position: relative;
+            background: linear-gradient(
+                145deg,
+                #19191c 0%,
+                #141416 100%
+            );
+
+            border: 1px solid rgba(255, 77, 29, .28);
+            border-radius: 16px;
+            padding: 22px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 22px;
+            flex-wrap: wrap;
+
+            box-shadow:
+                0 0 0 1px rgba(255, 77, 29, .035),
+                0 0 16px rgba(255, 77, 29, .065),
+                0 5px 18px rgba(0, 0, 0, .12),
+                inset 0 1px 0 rgba(255, 255, 255, .025);
+
+            transition:
+                border-color .25s ease,
+                box-shadow .25s ease,
+                transform .25s ease,
+                background .25s ease;
+        }
+
+        .report-item:hover {
+            background: linear-gradient(
+                145deg,
+                #201916 0%,
+                #171517 100%
+            );
+
+            border-color: rgba(255, 77, 29, .68);
+
+            box-shadow:
+                0 0 0 1px rgba(255, 77, 29, .10),
+                0 0 22px rgba(255, 77, 29, .17),
+                0 9px 25px rgba(0, 0, 0, .23),
+                inset 0 1px 0 rgba(255, 120, 75, .06);
+
+            transform: translateY(-2px);
+        }
+
+        .report-item h3 {
+            margin: 0 0 12px;
+            color: #fafafa;
+            font-size: 17px;
+            font-weight: 700;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .report-reason {
+            color: #a1a1aa;
+            font-size: 13px;
+            line-height: 1.7;
+            margin: 5px 0;
+        }
+
+        .report-reason strong {
+            color: #e4e4e7;
+            font-weight: 600;
+        }
+
+        .report-details {
+            color: #d4d4d8;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-top: 12px;
+            padding: 11px 13px;
+            background: #111113;
+            border: 1px solid rgba(255, 255, 255, .035);
+            border-left: 3px solid #ff4d1d;
+            border-radius: 0 8px 8px 0;
+            overflow-wrap: anywhere;
+        }
+
+        /* =========================
+           STATUS BADGES
+        ========================= */
+
+        .report-status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 13px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 750;
+            letter-spacing: .2px;
+            white-space: nowrap;
+            border: 1px solid transparent;
+        }
+
+        .report-status.status-pending {
+            color: #ff986f;
+            background: #2b1711;
+            border-color: #69301c;
+        }
+
+        .report-status.status-reviewed {
+            color: #93c5fd;
+            background: #142237;
+            border-color: #25466d;
+        }
+
+        .report-status.status-resolved {
+            color: #86efac;
+            background: #12251b;
+            border-color: #28583b;
+        }
+
+        .report-status.status-other {
+            color: #d4d4d8;
+            background: #222226;
+            border-color: #393940;
+        }
+
+        .report-notice {
+            color: #a1a1aa;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-top: 10px;
+            max-width: 210px;
+        }
+
+        .report-open-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 13px;
+            color: #ff7047;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: color .2s ease;
+        }
+
+        .report-open-link:hover {
+            color: #ff9a7d;
+        }
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .reports-empty {
+            padding: 36px 20px;
+            text-align: center;
+            color: #a1a1aa;
+            background: #171719;
+            border: 1px dashed #35353b;
+            border-radius: 14px;
+            line-height: 1.7;
+        }
+
+        .reports-empty strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #f4f4f5;
+            font-size: 16px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .site-credit {
+            text-align: center;
+            margin-top: 12px;
+            padding: 24px 0 30px;
+            color: #71717a;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: .2px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 768px) {
+            .report-section {
+                margin: 22px 0;
+                padding: 20px 16px;
+                border-radius: 15px;
+            }
+
+            .report-section-heading h2 {
+                font-size: 22px;
+            }
+
+            .report-item {
+                padding: 17px;
+                gap: 16px;
+            }
+
+            .report-item > div:last-child {
+                width: 100%;
+            }
+
+            .report-notice {
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .report-section {
+                padding: 17px 12px;
+            }
+
+            .report-section-heading {
+                align-items: flex-start;
+            }
+
+            .report-item h3 {
+                font-size: 15px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .report-item,
+            .notification-link,
+            .report-open-link {
+                transition: none;
+            }
+
+            .report-item:hover {
+                transform: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="sg-app">
+<div class="sg-app">
 
-        <!-- =========================
-         SIDEBAR
-         ========================= -->
+    <!-- SIDEBAR -->
+    <aside class="sg-sidebar">
 
-        <aside class="sg-sidebar">
+        <div class="sg-logo">
+            <div class="brand-mark">S</div>
+            <span>StudyGram</span>
+        </div>
 
-            <div class="sg-logo">
-                <div class="brand-mark">S</div>
-                <span>StudyGram</span>
+        <nav class="sg-nav">
+
+            <a class="nav-item active" href="/dashboard">
+                <span>⌂</span>
+                Home
+            </a>
+
+            <a class="nav-item" href="#categories">
+                <span>⌕</span>
+                Explore
+            </a>
+
+            <a class="nav-item" href="#my-reports">
+                <span>▱</span>
+                My Reports
+            </a>
+
+            <a class="nav-item" href="#my-reports">
+                <span>♙</span>
+                Report Status
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a class="nav-item" href="/upload">
+                <span>＋</span>
+                Upload Resource
+            </a>
+
+            <a class="nav-item" href="/logout">
+                <span>↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="sg-main">
+
+        <!-- TOP BAR -->
+        <header class="sg-topbar">
+
+            <div class="sg-search">
+                <span>⌕</span>
+
+                <input
+                    id="topSearch"
+                    type="text"
+                    placeholder="Search notes, PYQs, mindmaps, subjects..."
+                    onkeydown="if(event.key === 'Enter') searchResources(this.value)">
             </div>
 
+            <div class="sg-user">
 
-            <nav class="sg-nav">
+                <a class="notification-link"
+                   href="#my-reports"
+                   title="View your report statuses"
+                   aria-label="View your report statuses">
 
-                <a class="nav-item active" href="/dashboard">
-                    <span>⌂</span>
-                    Home
+                    <div class="notification">♧</div>
+
+                    <span class="notification-count"
+                          th:if="${!#lists.isEmpty(myReports)}"
+                          th:text="${#lists.size(myReports)}">0</span>
+
                 </a>
 
-                <a class="nav-item" href="#">
-                    <span>⌕</span>
-                    Explore
-                </a>
+                <div class="user-avatar">
+                    <span th:text="${#strings.substring(session.userName, 0, 1)}">S</span>
+                </div>
 
-                <a class="nav-item" href="#">
-                    <span>▱</span>
-                    My Resources
-                </a>
-
-                <a class="nav-item" href="#">
-                    <span>♙</span>
-                    Profile
-                </a>
-
-            </nav>
-
-
-            <div class="sidebar-bottom">
-
-                <a class="nav-item" href="#">
-                    <span>⚙</span>
-                    Settings
-                </a>
-
-                <a class="nav-item" href="/logout">
-                    <span>↪</span>
-                    Logout
-                </a>
+                <span class="user-greeting">
+                    Hello,
+                    <strong th:text="${session.userName}">Student</strong>
+                </span>
 
             </div>
 
-        </aside>
+        </header>
 
+        <!-- DASHBOARD CONTENT -->
+        <div class="sg-content">
 
-        <!-- =========================
-         MAIN AREA
-         ========================= -->
-
-        <main class="sg-main">
-
-            <!-- TOP BAR -->
-
-            <header class="sg-topbar">
-
-                <div class="sg-search">
-
-                    <span>⌕</span>
-
-                    <input type="text" placeholder="Search notes, PYQs, mindmaps, subjects...">
-
-                </div>
-
-
-                <div class="sg-user">
-
-                    <div class="notification">
-                        ♧
-                    </div>
-
-                    <div class="user-avatar">
-
-                        <span th:text="${#strings.substring(session.userName, 0, 1)}">
-                            Y
-                        </span>
-
-                    </div>
-
-                    <span class="user-greeting">
-                        Hello,
-                        <strong th:text="${session.userName}">
-                            Student
-                        </strong>
-                    </span>
-
-                </div>
-
-            </header>
-
-
-            <!-- =========================
-             CONTENT
-             ========================= -->
-
-            <div class="sg-content">
-
+            <div class="sg-main-content">
 
                 <!-- HERO -->
-
                 <section class="sg-hero">
 
                     <div class="hero-content">
 
-                        <p class="eyebrow">
-                            STUDY SMARTER
-                        </p>
+                        <p class="eyebrow">STUDY SMARTER</p>
 
                         <h1>
                             Your Academic<br>
@@ -142,14 +451,19 @@
                             to study better — all in one place.
                         </p>
 
-
                         <div class="hero-search">
 
                             <span>⌕</span>
 
-                            <input type="text" placeholder="What are you looking for?">
+                            <input
+                                id="heroSearch"
+                                type="text"
+                                placeholder="What are you looking for?"
+                                onkeydown="if(event.key === 'Enter') searchResources(this.value)">
 
-                            <button>
+                            <button
+                                type="button"
+                                onclick="searchResources(document.getElementById('heroSearch').value)">
                                 Search
                             </button>
 
@@ -157,308 +471,149 @@
 
                     </div>
 
-
                     <div class="hero-decoration">
-
                         <div class="deco-circle"></div>
-
                         <div class="deco-line"></div>
-
-                        <div class="deco-text">
-                            STUDY<br>
-                            BETTER
-                        </div>
-
+                        <div class="deco-text">STUDY<br>BETTER</div>
                     </div>
 
                 </section>
 
-
-                <!-- =========================
-                 CATEGORIES
-                 ========================= -->
-
-                <section class="sg-section">
+                <!-- CATEGORIES -->
+                <section class="sg-section" id="categories">
 
                     <div class="section-heading">
-
                         <div>
-
-                            <p class="eyebrow">
-                                EXPLORE
-                            </p>
-
-                            <h2>
-                                Study Resources
-                            </h2>
-
+                            <p class="eyebrow">EXPLORE</p>
+                            <h2>Study Resources</h2>
                         </div>
 
-                        <a href="#">
-                            View all →
-                        </a>
-
+                        <a href="#resources">View all →</a>
                     </div>
-
 
                     <div class="category-grid">
 
-
-                        <!-- NOTES -->
-
                         <a href="/category/Notes" class="category-card">
-
-                            <div class="category-icon">
-                                ▤
-                            </div>
-
-                            <span>
-                                Notes
-                            </span>
-
+                            <div class="category-icon">▤</div>
+                            <span>Notes</span>
                         </a>
-
-
-                        <!-- PYQs -->
 
                         <a href="/category/PYQs" class="category-card">
-
-                            <div class="category-icon purple">
-                                ▣
-                            </div>
-
-                            <span>
-                                PYQs
-                            </span>
-
+                            <div class="category-icon purple">▣</div>
+                            <span>PYQs</span>
                         </a>
-
-
-                        <!-- MINDMAPS -->
 
                         <a href="/category/Mindmaps" class="category-card">
-
-                            <div class="category-icon green">
-                                ✣
-                            </div>
-
-                            <span>
-                                Mindmaps
-                            </span>
-
+                            <div class="category-icon green">✣</div>
+                            <span>Mindmaps</span>
                         </a>
 
-
-                        <!-- IMPORTANT QUESTIONS -->
-
-                        <a th:href="@{/category/{category}(category='Important Questions')}" class="category-card">
-
-                            <div class="category-icon yellow">
-                                ★
-                            </div>
-
-                            <span>
-                                Important Questions
-                            </span>
-
+                        <a th:href="@{/category/{category}(category='Important Questions')}"
+                           class="category-card">
+                            <div class="category-icon yellow">★</div>
+                            <span>Important Questions</span>
                         </a>
 
-
-                        <!-- LAST YEAR PAPERS -->
-
-                        <a th:href="@{/category/{category}(category='Last Year Papers')}" class="category-card">
-
-                            <div class="category-icon blue">
-                                ▤
-                            </div>
-
-                            <span>
-                                Last Year Papers
-                            </span>
-
+                        <a th:href="@{/category/{category}(category='Last Year Papers')}"
+                           class="category-card">
+                            <div class="category-icon blue">▤</div>
+                            <span>Last Year Papers</span>
                         </a>
 
-
-                        <!-- CHEATSHEETS -->
-
-                        <a th:href="@{/category/{category}(category='Cheatsheets')}" class="category-card">
-
-                            <div class="category-icon pink">
-                                ϟ
-                            </div>
-
-                            <span>
-                                Cheatsheets
-                            </span>
-
+                        <a th:href="@{/category/{category}(category='Cheatsheets')}"
+                           class="category-card">
+                            <div class="category-icon pink">ϟ</div>
+                            <span>Cheatsheets</span>
                         </a>
 
-
-                        <!-- SHORT NOTES -->
-
-                        <a th:href="@{/category/{category}(category='Short Notes')}" class="category-card">
-
-                            <div class="category-icon teal">
-                                ▧
-                            </div>
-
-                            <span>
-                                Short Notes
-                            </span>
-
+                        <a th:href="@{/category/{category}(category='Short Notes')}"
+                           class="category-card">
+                            <div class="category-icon teal">▧</div>
+                            <span>Short Notes</span>
                         </a>
 
-
-                        <!-- FORMULA SHEETS -->
-
-                        <a th:href="@{/category/{category}(category='Formula Sheets')}" class="category-card">
-
-                            <div class="category-icon violet">
-                                ▦
-                            </div>
-
-                            <span>
-                                Formula Sheets
-                            </span>
-
+                        <a th:href="@{/category/{category}(category='Formula Sheets')}"
+                           class="category-card">
+                            <div class="category-icon violet">▦</div>
+                            <span>Formula Sheets</span>
                         </a>
 
-
-                        <!-- QUESTION BANKS -->
-
-                        <a th:href="@{/category/{category}(category='Question Banks')}" class="category-card">
-
-                            <div class="category-icon orange">
-                                ?
-                            </div>
-
-                            <span>
-                                Question Banks
-                            </span>
-
+                        <a th:href="@{/category/{category}(category='Question Banks')}"
+                           class="category-card">
+                            <div class="category-icon orange">?</div>
+                            <span>Question Banks</span>
                         </a>
 
-
-                        <!-- STUDY GUIDES -->
-
-                        <a th:href="@{/category/{category}(category='Study Guides')}" class="category-card">
-
-                            <div class="category-icon cyan">
-                                ◈
-                            </div>
-
-                            <span>
-                                Study Guides
-                            </span>
-
+                        <a th:href="@{/category/{category}(category='Study Guides')}"
+                           class="category-card">
+                            <div class="category-icon cyan">◈</div>
+                            <span>Study Guides</span>
                         </a>
-
-
-                        <!-- ASSIGNMENTS -->
 
                         <a href="/category/Assignments" class="category-card">
-
-                            <div class="category-icon red">
-                                ⚑
-                            </div>
-
-                            <span>
-                                Assignments
-                            </span>
-
+                            <div class="category-icon red">⚑</div>
+                            <span>Assignments</span>
                         </a>
-
 
                     </div>
 
                 </section>
 
-
-
-                <!-- =========================
-     QUICK ACCESS RESOURCES
-     ========================= -->
-
-                <section class="sg-section">
+                <!-- RESOURCES -->
+                <section class="sg-section" id="resources">
 
                     <div class="section-heading">
-
                         <div>
-
-                            <p class="eyebrow">
-                                QUICK ACCESS
-                            </p>
-
-                            <h2>
-                                Trending Resources
-                            </h2>
-
+                            <p class="eyebrow">QUICK ACCESS</p>
+                            <h2>Trending Resources</h2>
                         </div>
-
-                        <a href="#">
-                            Explore all →
-                        </a>
-
                     </div>
-
 
                     <div class="resource-grid">
 
-                        <article class="resource-card" th:each="resource : ${resources}"
+                        <article
+                            class="resource-card"
+                            th:each="resource : ${resources}"
                             th:onclick="|window.location.href='/resource/${resource.id}'|">
 
-                            <div class="resource-preview" th:classappend="${resource.category == 'PYQs'} ? ' preview-pyqs' :
-                 (${resource.category == 'Mindmaps'} ? ' preview-mindmap' :
-                 (${resource.category == 'Cheatsheets'} ? ' preview-cheatsheet' :
-                 (${resource.category == 'Formula Sheets'} ? ' preview-formula' :
-                 (${resource.category == 'Important Questions'} ? ' preview-questions' :
-                 ' preview-notes'))))">
+                            <div
+                                class="resource-preview"
+                                th:classappend="${resource.category == 'PYQs'} ? ' preview-pyqs' :
+                                (${resource.category == 'Mindmaps'} ? ' preview-mindmap' :
+                                (${resource.category == 'Cheatsheets'} ? ' preview-cheatsheet' :
+                                (${resource.category == 'Formula Sheets'} ? ' preview-formula' :
+                                (${resource.category == 'Important Questions'} ? ' preview-questions' :
+                                ' preview-notes'))))">
 
-                                <span class="resource-type" th:text="${resource.category}">
-                                    NOTES
-                                </span>
+                                <span class="resource-type"
+                                      th:text="${resource.category}">NOTES</span>
 
                                 <div class="fake-paper">
-
-                                    <span th:text="${resource.title}">
-                                        Resource Title
-                                    </span>
-
+                                    <span th:text="${resource.title}">Resource Title</span>
                                 </div>
 
                             </div>
 
-
                             <div class="resource-info">
 
-                                <h3 th:text="${resource.title}">
-                                    Resource Title
-                                </h3>
+                                <h3 th:text="${resource.title}">Resource Title</h3>
 
-                                <p class="resource-subject" th:text="${resource.subject}">
-                                    Subject
-                                </p>
-
+                                <p class="resource-subject"
+                                   th:text="${resource.subject}">Subject</p>
 
                                 <div class="resource-meta">
 
                                     <span>
                                         ♡
-                                        <span th:text="${resource.likes}">
-                                            0
-                                        </span>
+                                        <span th:text="${resource.likes}">0</span>
                                     </span>
 
                                     <span>
                                         ↓
-                                        <span th:text="${resource.downloads}">
-                                            0
-                                        </span>
+                                        <span th:text="${resource.downloads}">0</span>
                                     </span>
 
-                                    <span class="file-type">
-                                        PDF
-                                    </span>
+                                    <span class="file-type">PDF</span>
 
                                 </div>
 
@@ -468,219 +623,214 @@
 
                     </div>
 
+                    <p
+                        th:if="${#lists.isEmpty(resources)}"
+                        class="reports-empty">
+                        <strong>No resources available yet.</strong>
+                        Check back later for study materials.
+                    </p>
+
                 </section>
 
-                <!-- =========================
-         RIGHT PANEL
-         ========================= -->
+            </div>
 
-                <aside class="sg-right-panel">
+            <!-- RIGHT PANEL -->
+            <aside class="sg-right-panel">
 
+                <div class="welcome-box">
 
-                    <!-- WELCOME -->
+                    <h3>
+                        Good to see you,
+                        <span th:text="${session.userName}">Student</span>!
+                    </h3>
 
-                    <div class="welcome-box">
+                    <p>Keep going. You're doing great.</p>
 
-                        <h3>
-
-                            Good to see you,
-
-                            <span th:text="${session.userName}">
-                                Student
-                            </span>!
-
-                        </h3>
-
-                        <p>
-                            Keep going. You're doing great.
-                        </p>
-
-
-                        <div class="quote">
-
-                            <strong>
-                                “
-                            </strong>
-
-                            <span>
-                                Small steps every day lead to big results.
-                            </span>
-
-                        </div>
-
+                    <div class="quote">
+                        <strong>“</strong>
+                        <span>Small steps every day lead to big results.</span>
                     </div>
 
+                </div>
 
-                    <!-- TRENDING -->
+                <div class="side-box">
 
-                    <div class="side-box">
-
-                        <div class="side-heading">
-
-                            <h3>
-                                Trending Now
-                            </h3>
-
-                        </div>
-
-
-                        <div class="trend-item">
-
-                            <b>
-                                01
-                            </b>
-
-                            <div>
-
-                                <strong>
-                                    DSA Notes
-                                </strong>
-
-                                <small>
-                                    Computer Science
-                                </small>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="trend-item">
-
-                            <b>
-                                02
-                            </b>
-
-                            <div>
-
-                                <strong>
-                                    Engineering PYQs
-                                </strong>
-
-                                <small>
-                                    Mathematics
-                                </small>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="trend-item">
-
-                            <b>
-                                03
-                            </b>
-
-                            <div>
-
-                                <strong>
-                                    Mindmaps
-                                </strong>
-
-                                <small>
-                                    Science
-                                </small>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="trend-item">
-
-                            <b>
-                                04
-                            </b>
-
-                            <div>
-
-                                <strong>
-                                    Important Questions
-                                </strong>
-
-                                <small>
-                                    Engineering
-                                </small>
-
-                            </div>
-
-                        </div>
-
+                    <div class="side-heading">
+                        <h3>Quick Actions</h3>
                     </div>
 
+                    <a href="/upload" class="action-button primary">
+                        Upload Resource
+                    </a>
 
-                    <!-- QUICK ACTIONS -->
+                    <a href="#my-reports" class="action-button">
+                        My Report Status <span>→</span>
+                    </a>
 
-                    <div class="side-box">
+                </div>
 
-                        <div class="side-heading">
+                <div class="motivation-box">
+                    <span>✦</span>
 
-                            <h3>
-                                Quick Actions
-                            </h3>
+                    <p>
+                        Good notes today,<br>
+                        greater opportunities<br>
+                        tomorrow.
+                    </p>
+                </div>
 
-                        </div>
+            </aside>
 
+        </div>
 
-                        <a href="/upload" class="action-button primary">
+        <!-- MY REPORTS -->
+        <section class="report-section" id="my-reports">
 
-                            Upload Resource
+            <div class="report-section-heading">
 
-                        </a>
+                <div>
+                    <p class="eyebrow">ACCOUNT ACTIVITY</p>
+                    <h2>My Report Status</h2>
 
+                    <p class="report-count">
+                        Track the latest status of resources you have reported.
+                    </p>
+                </div>
 
-                        <button class="action-button">
-
-                            ▱ &nbsp; My Uploads
-
-                            <span>
-                                →
-                            </span>
-
-                        </button>
-
-                    </div>
-
-
-                    <!-- MOTIVATION -->
-
-                    <div class="motivation-box">
-
-                        <span>
-                            ✦
-                        </span>
-
-                        <p>
-
-                            Good notes today,<br>
-                            greater opportunities<br>
-                            tomorrow.
-
-                        </p>
-
-                    </div>
-
-
-                </aside>
+                <span
+                    class="report-status status-other"
+                    th:text="${#lists.size(myReports)} + ' total reports'">
+                    0 total reports
+                </span>
 
             </div>
-<div class="site-credit">
-    Created by Yash and Shubham
-</div>
-<style>
-.site-credit {
-    text-align: center;
-    margin-top: 5px;
-    padding: 20px 0 30px;
-    color: #A1A1AA;
-    font-size: 15px;
-    font-weight: 600;
-    opacity: 0.7;
-    letter-spacing: 0.2px;
-}
-</style>
- 
- </body>
 
+            <!-- EMPTY STATE -->
+            <div
+                class="reports-empty"
+                th:if="${#lists.isEmpty(myReports)}">
+
+                <strong>You haven't submitted any reports yet.</strong>
+
+                If you report a resource, you can track its status here.
+
+            </div>
+
+            <!-- REPORT CARDS -->
+            <div
+                class="report-list"
+                th:unless="${#lists.isEmpty(myReports)}">
+
+                <article
+                    class="report-item"
+                    th:each="report : ${myReports}">
+
+                    <!-- REPORT INFORMATION -->
+                    <div style="flex: 1; min-width: 200px;">
+
+                        <h3
+                            th:text="${report.resource != null ? report.resource.title : 'Resource unavailable'}">
+                            Resource title
+                        </h3>
+
+                        <p class="report-reason">
+                            Reason:
+                            <strong th:text="${report.reason}">Spam</strong>
+                        </p>
+
+                        <p
+                            class="report-reason"
+                            th:if="${report.reportedAt != null}">
+                            Submitted:
+                            <span
+                                th:text="${#temporals.format(report.reportedAt, 'dd MMM yyyy, hh:mm a')}">
+                                Date
+                            </span>
+                        </p>
+
+                        <p
+                            class="report-details"
+                            th:if="${report.details != null and !#strings.isEmpty(report.details)}"
+                            th:text="${report.details}">
+                            Additional details
+                        </p>
+
+                        <a
+                            th:if="${report.resource != null}"
+                            th:href="@{/resource/{id}(id=${report.resource.id})}"
+                            class="report-open-link">
+                            View resource →
+                        </a>
+
+                    </div>
+
+                    <!-- STATUS -->
+                    <div>
+
+                        <span
+                            class="report-status"
+                            th:classappend="${report.status != null and #strings.toUpperCase(report.status) == 'PENDING'} ? ' status-pending' :
+                            (${report.status != null and #strings.toUpperCase(report.status) == 'REVIEWED'} ? ' status-reviewed' :
+                            (${report.status != null and #strings.toUpperCase(report.status) == 'RESOLVED'} ? ' status-resolved' : ' status-other'))"
+                            th:text="${report.status != null ? #strings.capitalize(#strings.toLowerCase(report.status)) : 'Unknown'}">
+                            Pending
+                        </span>
+
+                        <p
+                            class="report-notice"
+                            th:if="${report.status != null and #strings.toUpperCase(report.status) == 'PENDING'}">
+                            Waiting for admin review.
+                        </p>
+
+                        <p
+                            class="report-notice"
+                            th:if="${report.status != null and #strings.toUpperCase(report.status) == 'REVIEWED'}">
+                            Your report has been reviewed.
+                        </p>
+
+                        <p
+                            class="report-notice"
+                            th:if="${report.status != null and #strings.toUpperCase(report.status) == 'RESOLVED'}">
+                            Your report has been marked resolved.
+                        </p>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="site-credit">
+            Created by Yash and Shubham
+        </footer>
+
+    </main>
+
+</div>
+
+<script>
+    function searchResources(value) {
+        const query = (value || "").trim().toLowerCase();
+        const cards = document.querySelectorAll(".resource-card");
+
+        cards.forEach(function (card) {
+            const text = card.innerText.toLowerCase();
+            card.style.display = text.includes(query) ? "" : "none";
+        });
+
+        const resourcesSection = document.getElementById("resources");
+
+        if (resourcesSection) {
+            resourcesSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+    }
+</script>
+
+</body>
 </html>
