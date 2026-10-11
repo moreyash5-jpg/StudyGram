@@ -1,20 +1,31 @@
+
 package com.studygram.controller;
 
 import com.studygram.model.Resource;
+import com.studygram.model.ResourceLike;
 import com.studygram.model.User;
+
 import com.studygram.repository.ResourceRepository;
+import com.studygram.repository.ResourceLikeRepository;
 import com.studygram.repository.UserRepository;
+
 import com.studygram.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -30,16 +41,19 @@ public class HomeController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final ResourceRepository resourceRepository;
+    private final ResourceLikeRepository resourceLikeRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     public HomeController(
             UserService userService,
             UserRepository userRepository,
-            ResourceRepository resourceRepository) {
+            ResourceRepository resourceRepository,
+            ResourceLikeRepository resourceLikeRepository) {
 
         this.userService = userService;
         this.userRepository = userRepository;
         this.resourceRepository = resourceRepository;
+        this.resourceLikeRepository = resourceLikeRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
@@ -87,21 +101,13 @@ public class HomeController {
             @RequestParam String password,
             HttpSession session) {
 
-        User user =
-                userRepository.findByEmail(email).orElse(null);
+        User user = userRepository.findByEmail(email).orElse(null);
 
         if (user != null &&
-                passwordEncoder.matches(
-                        password,
-                        user.getPassword())) {
+                passwordEncoder.matches(password, user.getPassword())) {
 
-            session.setAttribute(
-                    "userName",
-                    user.getName());
-
-            session.setAttribute(
-                    "userEmail",
-                    user.getEmail());
+            session.setAttribute("userName", user.getName());
+            session.setAttribute("userEmail", user.getEmail());
 
             return "redirect:/dashboard";
         }
@@ -144,16 +150,11 @@ public class HomeController {
         }
 
         List<Resource> resources =
-                resourceRepository
-                        .findByCategoryOrderByUploadDateDesc(category);
+                resourceRepository.findByCategoryOrderByUploadDateDesc(
+                        category);
 
-        model.addAttribute(
-                "resources",
-                resources);
-
-        model.addAttribute(
-                "category",
-                category);
+        model.addAttribute("resources", resources);
+        model.addAttribute("category", category);
 
         return "resource-list";
     }
@@ -164,9 +165,7 @@ public class HomeController {
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-
         session.invalidate();
-
         return "redirect:/";
     }
 
@@ -179,18 +178,15 @@ public class HomeController {
             @PathVariable Long id,
             Model model) {
 
-        Resource resource =
-                resourceRepository
-                        .findById(id)
-                        .orElse(null);
+        Resource resource = resourceRepository
+                .findById(id)
+                .orElse(null);
 
         if (resource == null) {
             return "redirect:/dashboard";
         }
 
-        model.addAttribute(
-                "resource",
-                resource);
+        model.addAttribute("resource", resource);
 
         return "resource";
     }
@@ -202,29 +198,18 @@ public class HomeController {
     @GetMapping("/add-test-resource")
     public String addTestResource() {
 
-        Resource resource =
-                new Resource();
+        Resource resource = new Resource();
 
-        resource.setTitle(
-                "Data Structures Complete Notes");
-
-        resource.setCategory(
-                "Notes");
-
-        resource.setSubject(
-                "Data Structures");
+        resource.setTitle("Data Structures Complete Notes");
+        resource.setCategory("Notes");
+        resource.setSubject("Data Structures");
 
         resource.setDescription(
                 "Complete notes covering important concepts of Data Structures and Algorithms.");
 
-        resource.setTags(
-                "DSA, Algorithms, Notes");
-
-        resource.setUploader(
-                "StudyGram");
-
-        resource.setFileName(
-                "data-structures-notes.pdf");
+        resource.setTags("DSA, Algorithms, Notes");
+        resource.setUploader("StudyGram");
+        resource.setFileName("data-structures-notes.pdf");
 
         resourceRepository.save(resource);
 
@@ -236,8 +221,7 @@ public class HomeController {
     // =========================
 
     @GetMapping("/upload")
-    public String uploadPage(
-            HttpSession session) {
+    public String uploadPage(HttpSession session) {
 
         if (session.getAttribute("userName") == null) {
             return "redirect:/";
@@ -269,72 +253,149 @@ public class HomeController {
         }
 
         try {
-
             // Create uploads folder
-            Path uploadPath =
-                    Paths.get("uploads");
+            Path uploadPath = Paths.get("uploads");
 
-            Files.createDirectories(
-                    uploadPath);
+            Files.createDirectories(uploadPath);
 
-            // Get original file name
-            String originalFileName =
-                    file.getOriginalFilename();
-
+            // Get original filename and extension
+            String originalFileName = file.getOriginalFilename();
             String extension = "";
 
             if (originalFileName != null &&
                     originalFileName.contains(".")) {
 
-                extension =
-                        originalFileName.substring(
-                                originalFileName.lastIndexOf("."));
+                extension = originalFileName.substring(
+                        originalFileName.lastIndexOf("."));
             }
 
-            // Generate unique file name
-            String storedFileName =
-                    UUID.randomUUID() + extension;
+            // Generate unique filename
+            String storedFileName = UUID.randomUUID() + extension;
 
-            Path filePath =
-                    uploadPath.resolve(
-                            storedFileName);
+            Path filePath = uploadPath.resolve(storedFileName);
 
             // Save physical file
-            Files.copy(
-                    file.getInputStream(),
-                    filePath);
+            Files.copy(file.getInputStream(), filePath);
 
-            // Create database resource
-            Resource resource =
-                    new Resource();
+            // Save resource metadata
+            Resource resource = new Resource();
 
             resource.setTitle(title);
-
             resource.setCategory(category);
-
             resource.setSubject(subject);
-
             resource.setDescription(description);
-
             resource.setTags(tags);
 
             resource.setUploader(
-                    (String) session.getAttribute(
-                            "userName"));
+                    (String) session.getAttribute("userName"));
 
-            resource.setFileName(
-                    storedFileName);
+            resource.setFileName(storedFileName);
 
-            resourceRepository.save(
-                    resource);
+            resourceRepository.save(resource);
 
             return "redirect:/dashboard";
 
         } catch (IOException e) {
-
             e.printStackTrace();
-
             return "redirect:/upload?error=upload";
+        }
+    }
+
+    // =========================
+    // LIKE RESOURCE - ONE PER USER
+    // =========================
+
+    @PostMapping("/resource/{id}/like")
+    public String likeResource(
+            @PathVariable Long id,
+            HttpSession session) {
+
+        String userEmail =
+                (String) session.getAttribute("userEmail");
+
+        // User must be logged in
+        if (userEmail == null) {
+            return "redirect:/";
+        }
+
+        Resource resource = resourceRepository
+                .findById(id)
+                .orElse(null);
+
+        if (resource == null) {
+            return "redirect:/dashboard";
+        }
+
+        // Check whether this user has already liked this resource
+        boolean alreadyLiked =
+                resourceLikeRepository
+                        .existsByUserEmailAndResourceId(
+                                userEmail, id);
+
+        if (!alreadyLiked) {
+
+            // Save the user's like
+            ResourceLike resourceLike =
+                    new ResourceLike(userEmail, id);
+
+            resourceLikeRepository.save(resourceLike);
+
+            // Update the displayed count
+            resource.incrementLikes();
+            resourceRepository.save(resource);
+        }
+
+        // Repeated clicks by the same user do not add likes
+        return "redirect:/resource/" + id;
+    }
+
+    // =========================
+    // DOWNLOAD RESOURCE
+    // =========================
+
+    @GetMapping("/resource/{id}/download")
+    public ResponseEntity<byte[]> downloadResource(
+            @PathVariable Long id) {
+
+        Resource resource = resourceRepository
+                .findById(id)
+                .orElse(null);
+
+        if (resource == null || resource.getFileName() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            Path uploadDirectory = Paths.get("uploads")
+                    .toAbsolutePath()
+                    .normalize();
+
+            Path filePath = uploadDirectory
+                    .resolve(resource.getFileName())
+                    .normalize();
+
+            // Prevent access to files outside the uploads folder
+            if (!filePath.startsWith(uploadDirectory)
+                    || !Files.isRegularFile(filePath)) {
+
+                return ResponseEntity.notFound().build();
+            }
+
+            byte[] fileContent = Files.readAllBytes(filePath);
+
+            // Increment download counter
+            resource.incrementDownloads();
+            resourceRepository.save(resource);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .header(
+                            HttpHeaders.CONTENT_DISPOSITION,
+                            "attachment; filename=\"studygram-resource.pdf\"")
+                    .body(fileContent);
+
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 }

@@ -104,6 +104,14 @@ public class Resource {
         return downloads;
     }
 
+    public void incrementDownloads() {
+        this.downloads++;
+    }
+
+    public void incrementLikes() {
+        this.likes++;
+    }
+
     public LocalDateTime getUploadDate() {
         return uploadDate;
     }
